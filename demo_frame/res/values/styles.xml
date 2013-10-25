@@ -1,0 +1,29 @@
+<resources>
+    <style name="AppTheme" parent="android:Theme.Light" />
+    
+    <style name="textview_style_0" parent="android:Widget.TextView">  
+        <item name="android:layout_width">wrap_content</item>  
+        <item name="android:layout_height">wrap_content</item>  
+        <item name="android:gravity">center_vertical</item>  
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="top_rightbtn_style">
+        <item name="android:layout_width">60dp</item>  
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@drawable/btn_top</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="top_backbtn_style">
+        <item name="android:layout_width">60dp</item>  
+        <item name="android:layout_height">30dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/btn_back</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>

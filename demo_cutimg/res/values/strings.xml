@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">demo_cutimg</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Main</string>
+    
+    <string name="dian_wo_jqtkqtp">点我就去图库取图片</string>
+    <string name="dian_wo_pz">点我拍照</string>
+    <string name="zhe_li_dxxsclhdtp">这里等下显示处理好的图片</string>
+
+</resources>

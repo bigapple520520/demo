@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">demo_welcome</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    
+    <string name="noword"></string>
+
+</resources>

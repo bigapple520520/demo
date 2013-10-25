@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">demo_media</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Main</string>
+    
+    <string name="an_zhu_wkssh">按住我开始说话</string>
+    <string name="zheng_zai_ly">正在录音</string>
+    <string name="ting_wo">听我</string>
+    <string name="deng_xia_lyhdwjdzjfzl">等下录音好的文件地址就放这里</string>
+
+</resources>

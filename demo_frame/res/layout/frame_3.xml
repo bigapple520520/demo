@@ -1,0 +1,44 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab3"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:visibility="invisible"
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:id="@+id/frameHead3"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/returnBtn3"
+            style="@style/top_backbtn_style"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/fan_hui"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/title3"
+            style="@style/textview_style_0"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="130dp"
+            android:text="@string/title3" />
+        <Button
+            android:id="@+id/rightBtn3"
+            style="@style/top_rightbtn_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:text="@string/que_ding" />
+    </RelativeLayout>
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:text="@string/tab2"
+        android:textSize="20sp"/>
+</LinearLayout>

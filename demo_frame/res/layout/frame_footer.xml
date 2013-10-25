@@ -1,0 +1,48 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabs"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal" >
+    <ImageButton
+        android:id="@+id/tabBtn1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/tabbtn1_pressed"
+        android:contentDescription="@string/blank" />
+    <ImageButton
+        android:id="@+id/tabBtn2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/tabbtn2_normal"
+        android:contentDescription="@string/blank" />
+    <ImageButton
+        android:id="@+id/tabBtn3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/tabbtn3_normal"
+        android:contentDescription="@string/blank" />
+    <ImageButton
+        android:id="@+id/tabBtn4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/tabbtn4_normal"
+        android:contentDescription="@string/blank" />
+</LinearLayout>

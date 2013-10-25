@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">demo_frame</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Main</string>
+    
+    <string name="blank"></string>
+    <string name="tab1">这是第1个界面</string>
+    <string name="tab2">这是第2个界面</string>
+    <string name="tab3">这是第3个界面</string>
+    <string name="tab4">这是第4个界面</string>
+    <string name="title1">标题一</string>
+    <string name="title2">标题二</string>
+    <string name="title3">标题三</string>
+    <string name="title4">标题四</string>
+    <string name="fan_hui">返回</string>
+    <string name="que_ding">确定</string>
+
+</resources>
