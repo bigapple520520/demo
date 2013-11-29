@@ -12,12 +12,18 @@ package com.dazzle.lettersort.entity;
  * @version $Revision: 1.0 $, $Date: 2013-7-16 下午3:33:31 $
  */
 public class ItemContent extends BaseItem {
-    private String name;// 内容项显示的名字
-    private Object object;// 内容的其他值对象
+    private int tag;// 区分不同对象可用
 
-    public ItemContent(String name, Object object) {
+    private String name;// 内容项显示的名字
+    private Object value;// 内容的其他值对象
+
+    public ItemContent(String name) {
         this.name = name;
-        this.object = object;
+    }
+
+    public ItemContent(String name, Object value) {
+        this.name = name;
+        this.value = value;
     }
 
     public String getName() {
@@ -28,12 +34,20 @@ public class ItemContent extends BaseItem {
         this.name = name;
     }
 
-    public Object getObject() {
-        return object;
+    public Object getValue() {
+        return value;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public int getTag() {
+        return tag;
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 
 }

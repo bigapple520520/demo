@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xuan.slidingmenu.R;
 import com.xuan.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
 /**
@@ -25,16 +24,18 @@ import com.xuan.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 public class CustomViewBehind extends ViewGroup {
     private static final String TAG = "CustomViewBehind";
 
+    public static final int SELECTED_VIEW_TAG = 0x7f040004;
+
     private int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;// 侧滑模式
 
-    private CustomViewAbove mViewAbove;
+    private CustomViewAbove mViewAbove;// 主界面
 
     private View mContent;// 左菜单
     private View mSecondaryContent;// 右菜单
 
-    private static final int MARGIN_THRESHOLD = 48; // 默认侧滑偏移量，单位dp
-    private int mMarginThreshold;// 侧滑偏移量，单位px
-    private int mWidthOffset;
+    private static final int MARGIN_THRESHOLD = 48; // 单位dp
+    private int mMarginThreshold;// MARGIN_THRESHOLD的px
+    private int mWidthOffset;// 菜单界面的便宜量
 
     private CanvasTransformer mTransformer;
     private boolean mChildrenEnabled;
@@ -223,6 +224,8 @@ public class CustomViewBehind extends ViewGroup {
 
     public int getMenuPage(int page) {
         page = (page > 1) ? 2 : ((page < 1) ? 0 : page);
+
+        // 到这page只有3种可能：0、1、2
         if (mMode == SlidingMenu.LEFT && page > 1) {
             return 0;
         }
@@ -437,7 +440,7 @@ public class CustomViewBehind extends ViewGroup {
             return;
         }
         if (mSelectorDrawable != null && mSelectedView != null) {
-            String tag = (String) mSelectedView.getTag(R.id.selected_view);
+            String tag = (String) mSelectedView.getTag(SELECTED_VIEW_TAG);
             if (tag.equals(TAG + "SelectedView")) {
                 canvas.save();
                 int left, right, offset;
@@ -465,12 +468,12 @@ public class CustomViewBehind extends ViewGroup {
 
     public void setSelectedView(View v) {
         if (mSelectedView != null) {
-            mSelectedView.setTag(R.id.selected_view, null);
+            mSelectedView.setTag(SELECTED_VIEW_TAG, null);
             mSelectedView = null;
         }
         if (v != null && v.getParent() != null) {
             mSelectedView = v;
-            mSelectedView.setTag(R.id.selected_view, TAG + "SelectedView");
+            mSelectedView.setTag(SELECTED_VIEW_TAG, TAG + "SelectedView");
             invalidate();
         }
     }

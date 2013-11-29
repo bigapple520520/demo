@@ -16,7 +16,6 @@ import java.util.Set;
  * @version $Revision: 1.0 $, $Date: 2012-11-22 上午9:56:17 $
  */
 public abstract class SpellUtils {
-
     public final static HashMap<String, String> surnameMap = new HashMap<String, String>(415);
 
     private final static LinkedHashMap<String, Integer> spellMap = new LinkedHashMap<String, Integer>(400);;

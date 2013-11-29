@@ -2,10 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-    <!-- 字母搜索条 -->
-    <com.dazzle.lettersort.view.LetterSortView
+    <com.dazzle.bigappleui.lettersort.view.LetterSortView
         android:id="@+id/letterSortView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-    </com.dazzle.lettersort.view.LetterSortView>
+        android:layout_height="fill_parent" />
 </RelativeLayout>

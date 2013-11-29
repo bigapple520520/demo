@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dazzle.lettersort.view.LetterSortBar.OnLetterChangeListener;
-import com.dazzle.lettersort.view.LetterSortBar.OnUpEventListener;
+import com.dazzle.lettersort.view.LetterSortBar.OnLetterChange;
+import com.dazzle.lettersort.view.LetterSortBar.OutLetterSeacherBar;
 
 /**
  * 按字母排序分类，并用字母做检索
@@ -31,8 +31,8 @@ public class LetterSortView extends ViewGroup {
     private TextView letterShow;// 字母提示控件
     private ListView listView;// 数据显示列表控件
 
-    private int LetterSortBarWidth = 40;// 字母条的宽度
-    private int LetterShowWidth = 100;// 显示字母提示的宽度
+    private int LetterSortBarWidth = 40;// 字母条的宽度，单位px
+    private int LetterShowWidth = 100;// 显示字母提示的宽度，单位px
 
     public LetterSortView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -49,6 +49,8 @@ public class LetterSortView extends ViewGroup {
         // 添加ListView
         if (null == listView) {
             listView = new ListView(context);
+            listView.setVerticalScrollBarEnabled(false);
+            // listView.setDividerHeight(0);
         }
         addView(listView);
 
@@ -56,7 +58,7 @@ public class LetterSortView extends ViewGroup {
         if (null == letterSortBar) {
             letterSortBar = new LetterSortBar(context);
 
-            letterSortBar.setOnLetterChangeListener(new OnLetterChangeListener() {
+            letterSortBar.setOnLetterChange(new OnLetterChange() {
                 @Override
                 public void letterChange(String letter) {
                     letterShow.setText(letter);
@@ -69,15 +71,14 @@ public class LetterSortView extends ViewGroup {
                     Integer indexInteger = lsa.getIndexMap().get(letter);
                     final int index = (null == indexInteger) ? -1 : indexInteger;
 
-                    // TODO:怎么这句话不灵啊。。。。。
-                    listView.requestFocusFromTouch();
                     listView.setSelection(index);
+                    listView.requestFocusFromTouch();
                 }
             });
 
-            letterSortBar.setOnUpEventListener(new OnUpEventListener() {
+            letterSortBar.setOutLetterSeacherBar(new OutLetterSeacherBar() {
                 @Override
-                public void upEvent() {
+                public void outBar(String lastLetter) {
                     letterShow.setVisibility(View.GONE);
                 }
             });
@@ -96,6 +97,15 @@ public class LetterSortView extends ViewGroup {
             tp.setFakeBoldText(true);
         }
         addView(letterShow);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if (null != listView) {
+            listView.measure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     @Override
@@ -119,28 +129,15 @@ public class LetterSortView extends ViewGroup {
         }
     }
 
+    // //////////////////////////////////////////右侧字母栏//////////////////////////////////////////////////////////////
     public LetterSortBar getLetterSortBar() {
         return letterSortBar;
     }
 
     public void setLetterSortBar(LetterSortBar letterSortBar) {
+        removeView(this.letterSortBar);
         this.letterSortBar = letterSortBar;
-    }
-
-    public TextView getLetterShow() {
-        return letterShow;
-    }
-
-    public void setLetterShow(TextView letterShow) {
-        this.letterShow = letterShow;
-    }
-
-    public ListView getListView() {
-        return listView;
-    }
-
-    public void setListView(ListView listView) {
-        this.listView = listView;
+        addView(letterSortBar, 1);
     }
 
     public int getLetterSortBarWidth() {
@@ -151,12 +148,35 @@ public class LetterSortView extends ViewGroup {
         LetterSortBarWidth = letterSortBarWidth;
     }
 
+    // ///////////////////////////////////////////////设置显示字母部分/////////////////////////////////////////////////
+    public TextView getLetterShow() {
+        return letterShow;
+    }
+
+    public void setLetterShow(TextView letterShow) {
+        removeView(this.letterShow);
+        this.letterShow = letterShow;
+        addView(letterShow, 2);
+        letterShow.setVisibility(View.GONE);
+    }
+
     public int getLetterShowWidth() {
         return LetterShowWidth;
     }
 
     public void setLetterShowWidth(int letterShowWidth) {
         LetterShowWidth = letterShowWidth;
+    }
+
+    // ////////////////////////////////////////////数据列表设置部分/////////////////////////////////////////////////////
+    public ListView getListView() {
+        return listView;
+    }
+
+    public void setListView(ListView listView) {
+        removeView(this.listView);
+        this.listView = listView;
+        addView(listView, 0);
     }
 
 }

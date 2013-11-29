@@ -1,6 +1,5 @@
 package com.dazzle.lettersort.view;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,16 +16,17 @@ import android.view.View;
  * @author xuan
  */
 public class LetterSortBar extends View {
-    private final String[] strArray = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#" };
+    private String[] letterArray = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+            "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#" };
+    private String lastLetter;
 
     private int width;// 单个字母的宽
     private int height;// 单个字母的高
 
-    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// 画笔
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private OnLetterChangeListener onLetterChangeListener;// 字母改变事件
-    private OnUpEventListener onUpEventListener;// 隐藏字幕显示
+    private OnLetterChange onLetterChange;
+    private OutLetterSeacherBar outLetterSeacherBar;
 
     public LetterSortBar(Context context) {
         super(context);
@@ -40,35 +40,34 @@ public class LetterSortBar extends View {
         super(context, attrs, defStyle);
     }
 
-    // 布局的大小改变时，就会调用该方法
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         width = w;
-        height = h / strArray.length;
+        height = h / letterArray.length;
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-            int tempY = (int) ((event.getY() - 0) / height);// 计算字母的位置
-            if (tempY < strArray.length && event.getY() > 0) {
-                if (null != onLetterChangeListener) {
-                    onLetterChangeListener.letterChange(strArray[tempY]);
-                }
-                // 这里设置背景2chatfrom_bg_new_fmessage_pressed.9.png
+            int tempY = (int) (event.getY() / height);// 字母位置
+            if (tempY < letterArray.length && event.getY() > 0) {
                 setBackgroundColor(Color.BLACK);
                 getBackground().setAlpha(50);// 0-255，0为全透明
+
+                String nowLetter = letterArray[tempY];
+                if (null != onLetterChange && !nowLetter.equals(lastLetter)) {
+                    onLetterChange.letterChange(nowLetter);
+                }
+
+                lastLetter = nowLetter;
             }
         }
         else {
-            // 这里设置背景1
-            // setBackgroundResource(0);
-            // setBackgroundResource(R.color.color_transparent);
-            setBackgroundResource(R.color.transparent);
+            setBackgroundColor(Color.TRANSPARENT);
 
-            if (null != onUpEventListener) {
-                onUpEventListener.upEvent();
+            if (null != outLetterSeacherBar) {
+                outLetterSeacherBar.outBar(lastLetter);
             }
         }
 
@@ -79,7 +78,6 @@ public class LetterSortBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // 设置Paint的属性
         paint.setFakeBoldText(true);
         paint.setColor(Color.GRAY);
         paint.setStyle(Style.FILL);
@@ -89,37 +87,47 @@ public class LetterSortBar extends View {
         float x = width / 2;
         float y = height / 2 - (fm.ascent + fm.descent) / 2;
 
-        for (int i = 0; i < strArray.length; i++) {
-            canvas.drawText(strArray[i], x, i * height + y + 0, paint);
+        for (int i = 0; i < letterArray.length; i++) {
+            canvas.drawText(letterArray[i], x, i * height + y, paint);
         }
     }
 
+    public String[] getLetterArray() {
+        return letterArray;
+    }
+
+    public void setLetterArray(String[] letterArray) {
+        this.letterArray = letterArray;
+        invalidate();
+    }
+
+    // ////////////////////////////////////////////事件监听/////////////////////////////////////////////////////////////
     /**
      * 搜索字母改变事件
      * 
      * @author xuan
      * @version $Revision: 1.0 $, $Date: 2012-11-1 下午6:10:00 $
      */
-    public interface OnLetterChangeListener {
+    public interface OnLetterChange {
         void letterChange(String letter);
     }
 
     /**
-     * 隐藏背景时会被调用，用来隐藏字幕的显示
+     * 手指移除控件等，可用来设置影藏字母提示
      * 
      * @author xuan
      * @version $Revision: 1.0 $, $Date: 2013-3-14 上午10:22:56 $
      */
-    public interface OnUpEventListener {
-        void upEvent();
+    public interface OutLetterSeacherBar {
+        void outBar(String lastLetter);
     }
 
-    public void setOnLetterChangeListener(OnLetterChangeListener onLetterChangeListener) {
-        this.onLetterChangeListener = onLetterChangeListener;
+    public void setOnLetterChange(OnLetterChange onLetterChange) {
+        this.onLetterChange = onLetterChange;
     }
 
-    public void setOnUpEventListener(OnUpEventListener onUpEventListener) {
-        this.onUpEventListener = onUpEventListener;
+    public void setOutLetterSeacherBar(OutLetterSeacherBar outLetterSeacherBar) {
+        this.outLetterSeacherBar = outLetterSeacherBar;
     }
 
 }

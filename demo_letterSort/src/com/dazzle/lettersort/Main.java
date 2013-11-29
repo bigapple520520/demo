@@ -5,19 +5,20 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.TextView;
 
-import com.dazzle.lettersort.entity.ItemContent;
-import com.dazzle.lettersort.view.DefaultLetterSortAdapter;
-import com.dazzle.lettersort.view.LetterSortView;
+import com.dazzle.bigappleui.lettersort.entity.ItemContent;
+import com.dazzle.bigappleui.lettersort.view.LetterSortView;
 
 public class Main extends Activity {
-
     private LetterSortView letterSortView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
         // 加载数据
         ItemContent ic = new ItemContent("徐安", null);
         List<ItemContent> dataList = new ArrayList<ItemContent>();
@@ -49,7 +50,41 @@ public class Main extends Activity {
         dataList.add(ic);
 
         letterSortView = (LetterSortView) findViewById(R.id.letterSortView);
-        letterSortView.getListView().setAdapter(new DefaultLetterSortAdapter(dataList, this));
+
+        // 自定义设置中间的字母显示框
+        letterSortView.setLetterShow((TextView) LayoutInflater.from(this).inflate(R.layout.letter_show_textview, null));
+
+        // LetterSortBar letterSortBar = new LetterSortBar(this);
+        //
+        // letterSortBar.setOnLetterChange(new OnLetterChange() {
+        // @Override
+        // public void letterChange(String letter) {
+        // letterSortView.getLetterShow().setText(letter);
+        // if (letterSortView.getLetterShow().getVisibility() != View.VISIBLE) {
+        // letterSortView.getLetterShow().setVisibility(View.VISIBLE);
+        // }
+        //
+        // // 定位ListView的显示区域
+        // LetterSortAdapter lsa = (LetterSortAdapter) letterSortView.getListView().getAdapter();
+        // Integer indexInteger = lsa.getIndexMap().get(letter);
+        // final int index = (null == indexInteger) ? -1 : indexInteger;
+        //
+        // // TODO:怎么这句话不灵啊。。。。。
+        // letterSortView.getListView().setSelection(index);
+        // letterSortView.getListView().requestFocusFromTouch();
+        // }
+        // });
+        //
+        // letterSortBar.setOutLetterSeacherBar(new OutLetterSeacherBar() {
+        // @Override
+        // public void outBar(String lastLetter) {
+        // letterSortView.getLetterShow().setVisibility(View.GONE);
+        // }
+        // });
+        // letterSortView.setLetterSortBar(letterSortBar);
+
+        letterSortView.getListView().setDividerHeight(0);
+        letterSortView.getListView().setAdapter(new DemoLetterSortAdapter(dataList, this));
     }
 
 }

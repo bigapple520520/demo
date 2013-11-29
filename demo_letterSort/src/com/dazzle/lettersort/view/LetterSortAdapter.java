@@ -72,7 +72,6 @@ public abstract class LetterSortAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
-    // 初始化字母索引,FrameActivity中也有用到
     private void initIndexMap(List<BaseItem> fromList) {
         for (int i = 0, n = fromList.size(); i < n; i++) {
             BaseItem bi = fromList.get(i);

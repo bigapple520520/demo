@@ -39,70 +39,31 @@ import com.xuan.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 public class SlidingMenu extends RelativeLayout {
     private static final String TAG = "SlidingMenu";
 
-    public static final int SLIDING_WINDOW = 0;
-    public static final int SLIDING_CONTENT = 1;
-    private boolean mActionbarOverlay = false;
-
-    /**
-     * 只有手势在边缘区域能侧滑出菜单
-     */
+    // 手势侧滑检测区域：0边缘、1全屏、2没有
     public static final int TOUCHMODE_MARGIN = 0;
-
-    /**
-     * 手势在屏幕的任何地方都能侧滑出菜单
-     */
     public static final int TOUCHMODE_FULLSCREEN = 1;
-
-    /**
-     * 任何地方都不能侧滑出菜单
-     */
     public static final int TOUCHMODE_NONE = 2;
 
-    /**
-     * 左侧滑模式
-     */
+    // 侧滑菜单模式：0只有左菜单、1只有右菜单、2左右都有
     public static final int LEFT = 0;
-
-    /**
-     * 右侧滑模式
-     */
     public static final int RIGHT = 1;
-
-    /**
-     * 左右侧滑模式
-     */
     public static final int LEFT_RIGHT = 2;
 
-    private final CustomViewAbove mViewAbove;
+    // 滑动载体：0整个窗体滑动、1内容滑动
+    public static final int SLIDING_WINDOW = 0;
+    public static final int SLIDING_CONTENT = 1;
 
-    /**
-     * 侧滑界面
-     */
+    // 是否Actionbar一起滑动
+    private boolean mActionbarOverlay = false;
+
+    // 主界面和侧滑界面容器
+    private final CustomViewAbove mViewAbove;
     private final CustomViewBehind mViewBehind;
 
+    // 事件监听接口
     private OnOpenListener mOpenListener;
     private OnOpenListener mSecondaryOpenListner;
     private OnCloseListener mCloseListener;
-
-    public interface OnOpenListener {
-        public void onOpen();
-    }
-
-    public interface OnOpenedListener {
-        public void onOpened();
-    }
-
-    public interface OnCloseListener {
-        public void onClose();
-    }
-
-    public interface OnClosedListener {
-        public void onClosed();
-    }
-
-    public interface CanvasTransformer {
-        public void transformCanvas(Canvas canvas, float percentOpen);
-    }
 
     // ////////////////////////////////////////////SlidingMenu构造//////////////////////////////////////////////////////
     public SlidingMenu(Context context) {
@@ -245,7 +206,7 @@ public class SlidingMenu extends RelativeLayout {
      * @param activity
      * @param slideStyle
      * @param actionbarOverlay
-     *            actionbar是否跟着一起动
+     *            Actionbar是否跟着一起动
      */
     public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
         if (slideStyle != SLIDING_WINDOW && slideStyle != SLIDING_CONTENT) {
@@ -369,7 +330,7 @@ public class SlidingMenu extends RelativeLayout {
         }
     }
 
-    // /////////////////////////////////////////左右惨菜单或者主界面显示/////////////////////////////////////////////////
+    // /////////////////////////////////////////显示左右菜单和主界面方法/////////////////////////////////////////////////
     public void showMenu() {
         showMenu(true);
     }
@@ -576,7 +537,6 @@ public class SlidingMenu extends RelativeLayout {
     }
 
     // ///////////////////////////////////////////侧滑到各种状态的监听设置////////////////////////////////////////////
-
     /**
      * 左菜单被开始打开
      * 
@@ -707,6 +667,35 @@ public class SlidingMenu extends RelativeLayout {
                 }
             });
         }
+    }
+
+    // /////////////////////////////////////////////事件监听接口////////////////////////////////////////////////////////
+    public interface OnOpenListener {
+        public void onOpen();
+    }
+
+    public interface OnOpenedListener {
+        public void onOpened();
+    }
+
+    public interface OnCloseListener {
+        public void onClose();
+    }
+
+    public interface OnClosedListener {
+        public void onClosed();
+    }
+
+    public interface CanvasTransformer {
+        public void transformCanvas(Canvas canvas, float percentOpen);
+    }
+
+    public CustomViewAbove getmViewAbove() {
+        return mViewAbove;
+    }
+
+    public CustomViewBehind getmViewBehind() {
+        return mViewBehind;
     }
 
 }

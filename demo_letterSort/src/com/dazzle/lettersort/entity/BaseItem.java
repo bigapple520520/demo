@@ -12,5 +12,4 @@ package com.dazzle.lettersort.entity;
  * @version $Revision: 1.0 $, $Date: 2013-7-16 下午3:31:56 $
  */
 public class BaseItem {
-
 }

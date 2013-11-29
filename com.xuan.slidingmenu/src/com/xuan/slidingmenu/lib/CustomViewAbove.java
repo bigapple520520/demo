@@ -51,12 +51,12 @@ public class CustomViewAbove extends ViewGroup {
         }
     };
 
-    /**
-     * 存放的是DcorView下一级的View，因为这个会被SlidingMenu代替
-     */
+    // 存放的是DcorView下一级的View，因为这个会被SlidingMenu代替
     private View mContent;
 
+    // 当前item：0左侧滑界面、1主界面、2右侧滑界面
     private int mCurItem;
+
     private Scroller mScroller;
 
     private boolean mScrollingCacheEnabled;
@@ -69,9 +69,7 @@ public class CustomViewAbove extends ViewGroup {
     private float mInitialMotionX;
 
     private boolean mQuickReturn = false;// 是否快速的返回定位
-    /**
-     * Position of the last motion event.
-     */
+
     private float mLastMotionX;
     private float mLastMotionY;
 
@@ -79,9 +77,6 @@ public class CustomViewAbove extends ViewGroup {
     protected int mActivePointerId = INVALID_POINTER;
     private static final int INVALID_POINTER = -1;
 
-    /**
-     * Determines speed during touch scrolling
-     */
     protected VelocityTracker mVelocityTracker;
     private int mMinimumVelocity;
     protected int mMaximumVelocity;
@@ -89,14 +84,18 @@ public class CustomViewAbove extends ViewGroup {
 
     private CustomViewBehind mViewBehind;
 
-    private boolean mEnabled = true;// 是否能侧滑
+    // 是否能侧滑
+    private boolean mEnabled = true;
 
+    // item有切换变化监听
     private OnPageChangeListener mOnPageChangeListener;
     private OnPageChangeListener mInternalPageChangeListener;
 
+    // 侧滑菜单是否被打开监听
     private OnClosedListener mClosedListener;
     private OnOpenedListener mOpenedListener;
 
+    // 侧滑操作时忽略侧滑的view
     private final List<View> mIgnoredViews = new ArrayList<View>();
 
     // ////////////////////////////////////////CustomViewAbove构造初始化///////////////////////////////////////////////
@@ -172,9 +171,11 @@ public class CustomViewAbove extends ViewGroup {
         final boolean dispatchSelected = mCurItem != item;
         mCurItem = item;
         final int destX = getDestScrollX(mCurItem);
+
         if (dispatchSelected && mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(item);
         }
+
         if (dispatchSelected && mInternalPageChangeListener != null) {
             mInternalPageChangeListener.onPageSelected(item);
         }
@@ -187,13 +188,6 @@ public class CustomViewAbove extends ViewGroup {
         }
     }
 
-    /**
-     * Set a listener that will be invoked whenever the page changes or is incrementally scrolled. See
-     * {@link OnPageChangeListener}.
-     * 
-     * @param listener
-     *            Listener to set
-     */
     public void setOnPageChangeListener(OnPageChangeListener listener) {
         mOnPageChangeListener = listener;
     }
@@ -322,14 +316,11 @@ public class CustomViewAbove extends ViewGroup {
     }
 
     /**
-     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
+     * 以velocity指定的速度滚动到指定的x,y处
      * 
      * @param x
-     *            the number of pixels to scroll by on the X axis
      * @param y
-     *            the number of pixels to scroll by on the Y axis
      * @param velocity
-     *            the velocity associated with a fling, if applicable. (0 otherwise)
      */
     void smoothScrollTo(int x, int y, int velocity) {
         if (getChildCount() == 0) {
@@ -337,6 +328,7 @@ public class CustomViewAbove extends ViewGroup {
             setScrollingCacheEnabled(false);
             return;
         }
+
         int sx = getScrollX();
         int sy = getScrollY();
         int dx = x - sx;
@@ -487,6 +479,7 @@ public class CustomViewAbove extends ViewGroup {
         }
     }
 
+    // 结束滚动，如果正在滚动，取消之，回到原来的位置
     private void completeScroll() {
         boolean needPopulate = mScrolling;
         if (needPopulate) {
@@ -500,6 +493,7 @@ public class CustomViewAbove extends ViewGroup {
             if (oldX != x || oldY != y) {
                 scrollTo(x, y);
             }
+
             if (isMenuOpen()) {
                 if (mOpenedListener != null) {
                     mOpenedListener.onOpened();
@@ -982,39 +976,34 @@ public class CustomViewAbove extends ViewGroup {
         return false;
     }
 
+    // //////////////////////////////////////item变化监听//////////////////////////////////////////////////////////////
     /**
-     * Callback interface for responding to changing state of the selected page
+     * item发生变化监听
      * 
      * @author xuan
-     * @version $Revision: 1.0 $, $Date: 2013-11-7 上午10:54:12 $
+     * @version $Revision: 1.0 $, $Date: 2013-11-14 下午7:45:59 $
      */
     public interface OnPageChangeListener {
 
         /**
-         * This method will be invoked when the current page is scrolled, either as part of a programmatically initiated
-         * smooth scroll or a user initiated touch scroll.
+         * item滚动时
          * 
          * @param position
-         *            Position index of the first page currently being displayed. Page position+1 will be visible if
-         *            positionOffset is nonzero.
          * @param positionOffset
-         *            Value from [0, 1) indicating the offset from the page at position.
          * @param positionOffsetPixels
-         *            Value in pixels indicating the offset from position.
          */
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
 
         /**
-         * This method will be invoked when a new page becomes selected. Animation is not necessarily complete.
+         * 另一个item被选中时
          * 
          * @param position
-         *            Position index of the new selected page.
          */
         public void onPageSelected(int position);
     }
 
     /**
-     * 如果不需要每个方法都实现，可继承他复写响应的方法
+     * OnPageChangeListener监听设配，可不用每个方法都实现
      * 
      * @author xuan
      * @version $Revision: 1.0 $, $Date: 2013-11-7 上午10:52:10 $
