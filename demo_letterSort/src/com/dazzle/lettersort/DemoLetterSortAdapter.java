@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dazzle.bigappleui.lettersort.entity.ItemContent;
 import com.dazzle.bigappleui.lettersort.entity.ItemDivide;
@@ -41,22 +40,21 @@ public class DemoLetterSortAdapter extends LetterSortAdapter {
 				R.layout.letter_show_content, null);
 		TextView leftText = (TextView) content.findViewById(R.id.leftText);
 		leftText.setText(itemContent.getName());
-
 		Button button = (Button) content.findViewById(R.id.btn);
 
 		View behind = LayoutInflater.from(context).inflate(
 				R.layout.letter_show_behind, null);
 
-		View temp = LayoutInflater.from(context).inflate(
-				R.layout.swipeview_item, null);
-		final SwipeView swipeView = (SwipeView) temp
-				.findViewById(R.id.swipeview);
+		// View temp = LayoutInflater.from(context).inflate(
+		// R.layout.swipeview_item, null);
+		final SwipeView swipeView = new SwipeView(context);
 		swipeView.addContentAndBehind(content, behind);
 		swipeView.setBehindWidthRes(R.dimen.behind_eidth);
 		swipeView.setSwipeCompleteListener(new SwipeCompleteListener() {
 			@Override
 			public void whichScreen(int which) {
-				Toast.makeText(context, "" + which, Toast.LENGTH_SHORT).show();
+				// Toast.makeText(context, "" + which,
+				// Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -69,7 +67,7 @@ public class DemoLetterSortAdapter extends LetterSortAdapter {
 			}
 		});
 
-		return temp;
+		return swipeView;
 	}
 
 	@Override

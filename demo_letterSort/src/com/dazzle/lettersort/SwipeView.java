@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 /**
@@ -15,7 +15,7 @@ import android.widget.Scroller;
  * 
  * @author xuan
  */
-public class SwipeView extends ViewGroup {
+public class SwipeView extends RelativeLayout {
 	private static final int SNAP_VELOCITY = 600;// 单位px，每秒滑过的px距离
 
 	private View mContent;
