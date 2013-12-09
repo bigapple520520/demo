@@ -26,57 +26,50 @@ import com.dazzle.lettersort.SwipeView.SwipeCompleteListener;
  * @version $Revision: 1.0 $, $Date: 2013-7-16 下午5:00:36 $
  */
 public class DemoLetterSortAdapter extends LetterSortAdapter {
-	private final Context context;
+    private final Context context;
 
-	public DemoLetterSortAdapter(List<ItemContent> fromList, Context context) {
-		super(fromList);
-		this.context = context;
-	}
+    public DemoLetterSortAdapter(List<ItemContent> fromList, Context context) {
+        super(fromList);
+        this.context = context;
+    }
 
-	@Override
-	public View drawItemContent(int position, View convertView,
-			ViewGroup parent, ItemContent itemContent) {
-		View content = LayoutInflater.from(context).inflate(
-				R.layout.letter_show_content, null);
-		TextView leftText = (TextView) content.findViewById(R.id.leftText);
-		leftText.setText(itemContent.getName());
-		Button button = (Button) content.findViewById(R.id.btn);
+    @Override
+    public View drawItemContent(int position, View convertView, ViewGroup parent, ItemContent itemContent) {
+        View content = LayoutInflater.from(context).inflate(R.layout.letter_show_content, null);
+        TextView leftText = (TextView) content.findViewById(R.id.leftText);
+        leftText.setText(itemContent.getName());
+        Button button = (Button) content.findViewById(R.id.btn);
 
-		View behind = LayoutInflater.from(context).inflate(
-				R.layout.letter_show_behind, null);
+        View behind = LayoutInflater.from(context).inflate(R.layout.letter_show_behind, null);
 
-		// View temp = LayoutInflater.from(context).inflate(
-		// R.layout.swipeview_item, null);
-		final SwipeView swipeView = new SwipeView(context);
-		swipeView.addContentAndBehind(content, behind);
-		swipeView.setBehindWidthRes(R.dimen.behind_eidth);
-		swipeView.setSwipeCompleteListener(new SwipeCompleteListener() {
-			@Override
-			public void whichScreen(int which) {
-				// Toast.makeText(context, "" + which,
-				// Toast.LENGTH_SHORT).show();
-			}
-		});
+        final SwipeView swipeView = new SwipeView(context);
+        swipeView.addContentAndBehind(content, behind);
+        swipeView.setBehindWidthRes(R.dimen.behind_eidth);
+        swipeView.setSwipeCompleteListener(new SwipeCompleteListener() {
+            @Override
+            public void whichScreen(int which) {
+                // Toast.makeText(context, "" + which,
+                // Toast.LENGTH_SHORT).show();
+            }
+        });
 
-		button.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (1 == swipeView.getCurScreen()) {
-					swipeView.snapToScreen(0);
-				}
-			}
-		});
+        button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (1 == swipeView.getCurScreen()) {
+                    swipeView.snapToScreen(0);
+                }
+            }
+        });
 
-		return swipeView;
-	}
+        return swipeView;
+    }
 
-	@Override
-	public View drawItemDivide(int position, View convertView,
-			ViewGroup parent, ItemDivide itemDivide) {
-		TextView textView = (TextView) LayoutInflater.from(context).inflate(
-				R.layout.letter_show_split, null);
-		textView.setText(itemDivide.getLetter());
-		return textView;
-	}
+    @Override
+    public View drawItemDivide(int position, View convertView, ViewGroup parent, ItemDivide itemDivide) {
+        TextView textView = (TextView) LayoutInflater.from(context).inflate(R.layout.letter_show_split, null);
+        textView.setText(itemDivide.getLetter());
+        return textView;
+    }
 
 }
