@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 /**
@@ -15,7 +15,7 @@ import android.widget.Scroller;
  * 
  * @author xuan
  */
-public class SwipeView extends RelativeLayout {
+public class SwipeView extends FrameLayout {
     public static final int CURSCREEN_CONTENT = 0;// 当前界面
     public static final int CURSCREEN_BEHIND = 1;// 侧滑后出来的界面
 
