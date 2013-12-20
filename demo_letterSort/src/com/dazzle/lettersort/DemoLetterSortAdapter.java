@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dazzle.bigappleui.lettersort.entity.ItemContent;
 import com.dazzle.bigappleui.lettersort.entity.ItemDivide;
@@ -48,17 +49,22 @@ public class DemoLetterSortAdapter extends LetterSortAdapter {
         swipeView.setSwipeCompleteListener(new SwipeCompleteListener() {
             @Override
             public void whichScreen(int which) {
-                // Toast.makeText(context, "" + which,
-                // Toast.LENGTH_SHORT).show();
             }
         });
 
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (1 == swipeView.getCurScreen()) {
-                    swipeView.snapToScreen(0);
+                if (SwipeView.CURSCREEN_BEHIND == swipeView.getCurScreen()) {
+                    swipeView.snapToScreen(SwipeView.CURSCREEN_CONTENT);
                 }
+            }
+        });
+
+        behind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "我点击了删除", Toast.LENGTH_SHORT).show();
             }
         });
 

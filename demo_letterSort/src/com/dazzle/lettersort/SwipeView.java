@@ -54,18 +54,6 @@ public class SwipeView extends FrameLayout {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (null != mContent) {
-            mContent.measure(widthMeasureSpec, heightMeasureSpec);
-        }
-
-        if (null != mBehind) {
-            mBehind.measure(widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (null != mContent) {
             mContent.layout(0, 0, mContent.getMeasuredWidth(), mContent.getMeasuredHeight());
@@ -214,6 +202,15 @@ public class SwipeView extends FrameLayout {
 
             curScreen = whichScreen;
             invalidate();
+        }
+    }
+
+    public void toggle() {
+        if (curScreen == CURSCREEN_CONTENT) {
+            snapToScreen(CURSCREEN_BEHIND);
+        }
+        else if (curScreen == CURSCREEN_BEHIND) {
+            snapToScreen(CURSCREEN_CONTENT);
         }
     }
 
