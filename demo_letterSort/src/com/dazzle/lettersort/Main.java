@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.dazzle.bigappleui.lettersort.entity.ItemContent;
@@ -71,6 +72,16 @@ public class Main extends Activity {
 
         // 自定义设置中间的字母显示框
         letterSortView.setLetterShow((TextView) LayoutInflater.from(this).inflate(R.layout.letter_show_textview, null));
+
+        letterSortView.getListView().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
         // LetterSortBar letterSortBar = new LetterSortBar(this);
         //

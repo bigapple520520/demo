@@ -39,6 +39,8 @@ public class SwipeView extends FrameLayout {
 
     private int curScreen;// 记录当前屏幕的位置，从0表示content，1表示behind
 
+    private boolean canSwipe = true;
+
     public SwipeView(Context context) {
         this(context, null, 0);
     }
@@ -51,6 +53,16 @@ public class SwipeView extends FrameLayout {
         super(context, attrs, defStyle);
         touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(ViewConfiguration.get(context));
         scroller = new Scroller(context);
+
+        setFocusableInTouchMode(true);
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus || CURSCREEN_BEHIND == curScreen) {
+                    snapToScreen(CURSCREEN_CONTENT);
+                }
+            }
+        });
     }
 
     @Override
@@ -75,6 +87,14 @@ public class SwipeView extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!canSwipe) {
+            return false;
+        }
+
+        if (!hasFocus()) {
+            requestFocus();
+        }
+
         final int action = ev.getAction();
         // 如果事件是正在移动，且触发状态不在空闲状态，就拦截事件，不让事件往子控件传递
         if ((action == MotionEvent.ACTION_MOVE) && (touchState != TOUCH_STATE_REST)) {
@@ -104,6 +124,10 @@ public class SwipeView extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!canSwipe) {
+            return false;
+        }
+
         if (null == velocityTracker) {
             velocityTracker = VelocityTracker.obtain();
         }
@@ -287,6 +311,14 @@ public class SwipeView extends FrameLayout {
      */
     public interface SwipeCompleteListener {
         public void whichScreen(int which);
+    }
+
+    public boolean isCanSwipe() {
+        return canSwipe;
+    }
+
+    public void setCanSwipe(boolean canSwipe) {
+        this.canSwipe = canSwipe;
     }
 
 }
