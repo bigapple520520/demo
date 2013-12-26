@@ -42,6 +42,7 @@ public class CustomViewAbove extends ViewGroup {
 
     private static final int MAX_SETTLE_DURATION = 600; // ms
     private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
+    private int mFlingDistance;// MIN_DISTANCE_FOR_FLING的px值
 
     private static final Interpolator sInterpolator = new Interpolator() {
         public float getInterpolation(float t) {
@@ -77,7 +78,6 @@ public class CustomViewAbove extends ViewGroup {
     protected VelocityTracker mVelocityTracker;
     private int mMinimumVelocity;
     protected int mMaximumVelocity;
-    private int mFlingDistance;
 
     private CustomViewBehind mViewBehind;
 
@@ -122,7 +122,13 @@ public class CustomViewAbove extends ViewGroup {
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
         mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
-        setInternalPageChangeListener(new SimpleOnPageChangeListener() {
+
+        setInternalPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
             public void onPageSelected(int position) {
                 if (mViewBehind != null) {
                     switch (position) {
@@ -199,13 +205,11 @@ public class CustomViewAbove extends ViewGroup {
         mClosedListener = onClosedListener;
     }
 
-    OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
-        OnPageChangeListener oldListener = mInternalPageChangeListener;
-        mInternalPageChangeListener = listener;
-        return oldListener;
+    private void setInternalPageChangeListener(OnPageChangeListener listener) {
+        this.mInternalPageChangeListener = listener;
     }
 
-    // ////////////////////////////////////设置子界面上的滑动忽略//////////////////////////////////////////////////////
+    // ////////////////////////////////子界面黑名单（被设置的子界面，在他上滑动不会发生侧滑效果）/////////////////////////
     public void addIgnoredView(View v) {
         if (!mIgnoredViews.contains(v)) {
             mIgnoredViews.add(v);
@@ -269,7 +273,7 @@ public class CustomViewAbove extends ViewGroup {
     }
 
     public int getBehindWidth() {
-        if (mViewBehind == null) {
+        if (null == mViewBehind) {
             return 0;
         }
         else {
@@ -934,7 +938,7 @@ public class CustomViewAbove extends ViewGroup {
 
     // //////////////////////////////////////item变化监听//////////////////////////////////////////////////////////////
     /**
-     * item发生变化监听
+     * 侧滑发生变化监听
      * 
      * @author xuan
      * @version $Revision: 1.0 $, $Date: 2013-11-14 下午7:45:59 $
@@ -942,7 +946,7 @@ public class CustomViewAbove extends ViewGroup {
     public interface OnPageChangeListener {
 
         /**
-         * item滚动时
+         * 侧滑滚动时
          * 
          * @param position
          * @param positionOffset
@@ -951,30 +955,11 @@ public class CustomViewAbove extends ViewGroup {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
 
         /**
-         * 另一个item被选中时
+         * 侧滑状态改变时
          * 
          * @param position
          */
         public void onPageSelected(int position);
-    }
-
-    /**
-     * OnPageChangeListener监听设配，可不用每个方法都实现
-     * 
-     * @author xuan
-     * @version $Revision: 1.0 $, $Date: 2013-11-7 上午10:52:10 $
-     */
-    public static class SimpleOnPageChangeListener implements OnPageChangeListener {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-        }
-
-        public void onPageScrollStateChanged(int state) {
-        }
     }
 
 }

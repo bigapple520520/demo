@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dazzle.bigappleui.slidingmenu.SlidingMenu.OnCloseListener;
@@ -30,11 +31,20 @@ public class Main extends Activity {
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
         View above = LayoutInflater.from(this).inflate(R.layout.above, null);
+        TextView aboveText = (TextView) above.findViewById(R.id.aboveText);
         View menu = LayoutInflater.from(this).inflate(R.layout.menu, null);
+        View menu2 = LayoutInflater.from(this).inflate(R.layout.menu2, null);
+
+        // 设置主界面和侧滑界面的view
         slidingMenu.setContent(above);
         slidingMenu.setMenu(menu);
-        slidingMenu.setSecondaryMenu(R.layout.menu2);
+        slidingMenu.setSecondaryMenu(menu2);
+
+        // 设置侧滑的偏移量直接数字的话单位是px，可以用dimens文件的id设置
         slidingMenu.setBehindOffset(50);
+
+        // 忽略不产生侧滑效果的子界面
+        slidingMenu.addIgnoredView(aboveText);
 
         // 侧边的渐变效果
         slidingMenu.setShadowDrawable(R.drawable.view_left_bg);
@@ -80,6 +90,11 @@ public class Main extends Activity {
                 Toast.makeText(Main.this, "setOnClosedListener", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
 }
