@@ -529,6 +529,7 @@ public class CustomViewAbove extends ViewGroup {
     }
 
     private int getPointerIndex(MotionEvent ev, int id) {
+        // If running on a pre-ECLAIR(API5) device, does nothing and returns -1
         int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
         if (activePointerIndex == -1) {
             mActivePointerId = INVALID_POINTER;

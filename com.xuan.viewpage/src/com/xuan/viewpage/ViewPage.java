@@ -8,6 +8,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 import com.xuan.viewpage.event.OnScrollCompleteListener;
@@ -20,6 +21,13 @@ import com.xuan.viewpage.event.ScrollEventAdapter;
  * @author xuan
  */
 public class ViewPage extends ViewGroup {
+    private static final Interpolator sInterpolator = new Interpolator() {
+        public float getInterpolation(float t) {
+            t -= 1.0f;
+            return t * t * t * t * t + 1.0f;
+        }
+    };
+
     private static final int TOUCH_STATE_REST = 0;// 空闲状态
     private static final int TOUCH_STATE_SCROLLING = 1;// 正在滚动状态
     private int touchState = TOUCH_STATE_REST;
@@ -44,7 +52,7 @@ public class ViewPage extends ViewGroup {
     public ViewPage(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         scrollEventAdapter = new ScrollEventAdapter();
-        scroller = new Scroller(context);
+        scroller = new Scroller(context, sInterpolator);
         curScreen = 0;
 
         ViewConfiguration config = ViewConfiguration.get(getContext());

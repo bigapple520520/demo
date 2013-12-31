@@ -23,7 +23,7 @@ public class ViewPageMain extends Activity {
         viewPage = (ViewPage) findViewById(R.id.viewPage);
 
         // 设置偏移量
-        viewPage.setOffset(50);
+        // viewPage.setOffset(50);
 
         // 设置滚动后的监听器
         viewPage.addOnScrollCompleteListener(new OnScrollCompleteListener() {
@@ -42,21 +42,19 @@ public class ViewPageMain extends Activity {
 
         // 设置要切屏显示的view
         ImageView pic1 = (ImageView) LayoutInflater.from(this).inflate(R.layout.image_layout, null);
-        pic1.setImageResource(R.drawable.pic1);
-
         ImageView pic2 = (ImageView) LayoutInflater.from(this).inflate(R.layout.image_layout, null);
-        pic2.setImageResource(R.drawable.pic2);
-
         ImageView pic3 = (ImageView) LayoutInflater.from(this).inflate(R.layout.image_layout, null);
-        pic3.setImageResource(R.drawable.pic3);
-
         ImageView pic4 = (ImageView) LayoutInflater.from(this).inflate(R.layout.image_layout, null);
-        pic4.setImageResource(R.drawable.pic4);
 
         viewPage.addView(pic1);
         viewPage.addView(pic2);
         viewPage.addView(pic3);
         viewPage.addView(pic4);
+
+        pic1.setImageResource(R.drawable.pic1);
+        pic2.setImageResource(R.drawable.pic2);
+        pic3.setImageResource(R.drawable.pic3);
+        pic4.setImageResource(R.drawable.pic4);
 
         // 设置按钮，暴力跳转到指定界面
         button = (Button) findViewById(R.id.button);
