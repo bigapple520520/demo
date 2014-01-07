@@ -8,7 +8,9 @@ package com.xuan.demo.ratingbar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 
+import com.winupon.andframe.bigapple.utils.ToastUtils;
 import com.xuan.demo.R;
 
 /**
@@ -17,7 +19,7 @@ import com.xuan.demo.R;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-11-11 下午1:30:21 $
  */
-public class Main extends Activity {
+public class RatingBarMain extends Activity {
     private RatingBar ratingbar;
 
     @Override
@@ -25,6 +27,13 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ratingbar_demo);
         ratingbar = (RatingBar) findViewById(R.id.ratingbar);
+
+        ratingbar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ToastUtils.displayTextLong(RatingBarMain.this, String.valueOf(rating));
+            }
+        });
     }
 
 }

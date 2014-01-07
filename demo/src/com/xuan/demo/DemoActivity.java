@@ -3,7 +3,7 @@ package com.xuan.demo;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class MainActivity extends Activity {
+public class DemoActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
