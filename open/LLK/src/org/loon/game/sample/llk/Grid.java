@@ -15,7 +15,9 @@ public class Grid extends Picture {
     private static final long serialVersionUID = 8691783836025759797L;
 
     private Animation animation;
-    private int type, xpos, ypos;
+    private int type;
+    private int xpos;
+    private int ypos;
 
     public Grid(LImage img) {
         super(img);
@@ -42,12 +44,13 @@ public class Grid extends Picture {
     @Override
     public void createUI(LGraphics g) {
         super.createUI(g);
-        if (animation == null) {
+        if (null == animation) {
             return;
         }
+
         if (type == 0 || type == 2) {
             LImage img = animation.getSpriteImage().getImage();
-            if (img != null) {
+            if (null != img) {
                 g.drawImage(img, x() + (getWidth() - img.getWidth()) / 2, y() + (getHeight() - img.getHeight()) / 2);
             }
         }

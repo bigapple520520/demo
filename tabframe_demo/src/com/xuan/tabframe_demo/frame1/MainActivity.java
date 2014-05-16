@@ -1,13 +1,14 @@
 package com.xuan.tabframe_demo.frame1;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost.TabSpec;
 
+import com.winupon.andframe.bigapple.ioc.InjectView;
+import com.winupon.andframe.bigapple.ioc.app.AnFragmentActivity;
 import com.xuan.tabframe_demo.R;
 
 /**
@@ -16,8 +17,11 @@ import com.xuan.tabframe_demo.R;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-10-25 下午6:55:29 $
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AnFragmentActivity {
+    @InjectView(R.id.tabhost)
     private FragmentTabHost tabhost;
+
+    @InjectView(R.id.tab)
     private RadioGroup tab;
 
     private final Class<?>[] fragments = { Fragment1.class, Fragment2.class, Fragment3.class, Fragment4.class };
@@ -26,12 +30,13 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        // ViewUtils.inject(this);
         initView();
     }
 
     private void initView() {
-        tabhost = (FragmentTabHost) findViewById(R.id.tabhost);
-        tab = (RadioGroup) findViewById(R.id.tab);
+        // tabhost = (FragmentTabHost) findViewById(R.id.tabhost);
+        // tab = (RadioGroup) findViewById(R.id.tab);
 
         tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 

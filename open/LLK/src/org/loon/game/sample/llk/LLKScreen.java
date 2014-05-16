@@ -18,6 +18,7 @@ import org.loon.framework.android.game.core.graphics.window.LPaper;
 import org.loon.framework.android.game.core.graphics.window.LSelect;
 import org.loon.framework.android.game.core.timer.LTimer;
 import org.loon.framework.android.game.core.timer.LTimerContext;
+import org.loon.game.sample.llk.entity.Level;
 
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -98,11 +99,9 @@ public class LLKScreen extends Screen {
     }
 
     private class AnimateThread extends Thread {
-
         private LinkedList<Grid> v;
 
         public AnimateThread(LinkedList<Grid> temp) {
-
             v = temp;
         }
 
@@ -145,7 +144,6 @@ public class LLKScreen extends Screen {
 
     }
 
-    @SuppressWarnings("unchecked")
     private void reset() {
         overFlag = false;
         failgame = false;
@@ -163,11 +161,7 @@ public class LLKScreen extends Screen {
         initUI();
     }
 
-    /**
-     * 选择游戏关卡
-     * 
-     * @param no
-     */
+    // 关卡的设置
     private void stage(int no) {
         switch (no) {
         case 1:
@@ -464,8 +458,8 @@ public class LLKScreen extends Screen {
         }
     }
 
+    // 初始化界面
     private void initUI() {
-
         xBound = levelInfo.getXBound() + 2;
         yBound = levelInfo.getYBound() + 2;
 
@@ -526,6 +520,7 @@ public class LLKScreen extends Screen {
         return result;
     }
 
+    // 打乱方块
     private void shuffle(Grid array[], int count) {
         if (wingame) {
             return;
@@ -707,7 +702,6 @@ public class LLKScreen extends Screen {
 
         AnimateThread thread = new AnimateThread(temp);
         thread.start();
-
     }
 
     public void showNext() {
@@ -756,16 +750,17 @@ public class LLKScreen extends Screen {
         return false;
     }
 
-    // 纯组件制作，所以不需要手动绘图。
     @Override
     public void draw(LGraphics g) {
+        // 纯组件制作，所以不需要手动绘图
     }
 
     private Grid getGrid(int x, int y) {
         Sprites ss = getSprites();
-        if (ss == null) {
+        if (null == ss) {
             return null;
         }
+
         ISprite[] s = ss.getSprites();
         for (int i = 0; i < s.length; i++) {
             if (s[i] instanceof Grid) {
@@ -778,34 +773,8 @@ public class LLKScreen extends Screen {
         return null;
     }
 
-    class Level {
-
-        private int xBound;
-
-        private int yBound;
-
-        public Level() {
-            xBound = 8;
-            yBound = 6;
-        }
-
-        public Level(int x, int y) {
-            xBound = x;
-            yBound = y;
-        }
-
-        public int getXBound() {
-            return xBound;
-        }
-
-        public int getYBound() {
-            return yBound;
-        }
-    }
-
     @Override
     public void onTouch(float x, float y, MotionEvent e, int pointerCount, int pointerId) {
-
     }
 
     @Override
@@ -820,15 +789,10 @@ public class LLKScreen extends Screen {
 
     @Override
     public boolean onTouchDown(MotionEvent e) {
-        if (!init) {
+        if (!init || failgame || wingame || progress.getValue() == 0) {
             return false;
         }
-        if (failgame) {
-            return false;
-        }
-        if (wingame || progress.getValue() == 0) {
-            return false;
-        }
+
         if (nexte != null && nexts != null) {
             if (helpRole != null) {
                 if (!role.isVisible() && helpRole.isVisible()) {
@@ -929,4 +893,5 @@ public class LLKScreen extends Screen {
     public boolean onTouchUp(MotionEvent e) {
         return true;
     }
+
 }
