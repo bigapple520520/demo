@@ -1,0 +1,12 @@
+a:8:{s:2:"id";s:6:"mm0ek3";s:5:"state";s:7:"publish";s:5:"title";s:29:"LogUtils日志工具类使用";s:4:"tags";a:2:{i:0;s:6:"日志";i:1;s:8:"LogUtils";}s:4:"date";s:10:"2014-05-04";s:4:"time";s:8:"15:32:13";s:11:"can_comment";s:1:"1";s:7:"content";s:1764:"<strong>1、简介</strong><br />关于日志记录部分。安卓中有自带的日志记录工具。Log类。使用这个类，每次都要我们传入一个TAG，用来标记当前日志。例如这样：Log.d(Constants.TAG, &quot;debug test&quot;);其中Constants.TAG就是我们自己定义的一个字符串。<br />LogUtils，就是在Log类基础上做了一个简单的封装，他可以免去每次都传入一个TAG，会自动生成一个TAG。这个TAG可以准确的定位记录日志的行数。格式如：类名[方法名， 调用行数]----------summary_split----------<br /><br /><strong>2、代码中使用如下：</strong><br /><pre class="brush:java;">public class Main extends Activity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+ 
+        //记录debug级别的日志
+        LogUtils.d(&quot;debug test&quot;);
+    }
+}
+</pre>上面执行代码之后，打出的日志是：<br />11-15 12:24:49.692: D/Main[onCreate, 21](4214): debug test<br />其中Main就是我记录日志的当前类，onCreate就是当前方法。21就是我记录的行数。这样就很容易定位日志的当前位置了。<br />如果在外网发布时，我们不希望debug的日志输出，可以设置如下：<br /><pre class="brush:java;">LogUtils.allowD = false;//全局生效
+</pre>设置上面后，所有的debug日志就不会打印了。一般在外网发布时可以设置。<br />PS：所有级别的日志，都是默认true开启的。只有你显示的设置false，那么对应的日志级别就不会记录输出。顺便说下，LogUtils的所有日志记录级别分类和方法签名都和原生Log类保持一致的。";}

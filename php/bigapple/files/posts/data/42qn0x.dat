@@ -1,0 +1,31 @@
+a:8:{s:2:"id";s:6:"42qn0x";s:5:"state";s:7:"publish";s:5:"title";s:40:"Bigapple之本地sqlite数据库db模块";s:4:"tags";a:2:{i:0;s:6:"sqlite";i:1;s:15:"本地数据库";}s:4:"date";s:10:"2014-05-04";s:4:"time";s:8:"15:15:14";s:11:"can_comment";s:1:"1";s:7:"content";s:2847:"<strong>1、简介</strong><br />db部分是对本地sqlite数据操作的轻量级封装。主要解决了：<br />（1）执行升级语法的管理。已升级语法的形式存在。<br />（2）处理了多线程多实例的线程安全问题，即使用时不必考虑多线程操作数据库的问题。<br />（3）对执行方法做了轻量级的封装，半自动化，类似spring dao的轻量级封装，需要自己写语法。----------summary_split----------<br /><br /><strong>2、使用demo如下</strong><br />（1）首先在assets放入需要执行的语法，例如下面我放了3个语法，以后每次更新应用，你就可以加一份语法，<br /><img src="http://blog.xuanner.com/bigapple/files/posts/data/42qn0x/bigapple_db.png" alt="" /><br />（2）在应用启动的时刻初始化数据库，例如可以在自定义Application中初始化：<br /><pre class="brush:java;">public class StartApplication extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+ 
+        // 初始化数据库版本号和数据库名，3表示会自动执行从1-3的语法，demo_db为使用数据库名字
+        DBHelper.init(3, &quot;demo_db&quot;);
+    }
+}
+</pre><br />（3）然后具体使用，是继承 BasicDao类就可以了，如下我定义个UserDao：<br /><pre class="brush:java;">public class UserDao extends BasicDao {
+    public UserDao(Context context) {
+        super(context);
+    }
+ 
+    private static final String FIND_USERS = &quot;SELECT id,name FROM table_user&quot;;
+ 
+    public List<user> findUserList() {
+        return query(FIND_USERS, null, new MultiRowMapper<user>() {
+            @Override
+            public User mapRow(Cursor rs, int arg1) throws SQLException {
+               User User = new User();
+               user.setName(rs.getString(rs.getColumnIndex(&quot;name&quot;)));
+               user.setId(rs.getString(rs.getColumnIndex(&quot;id&quot;)));
+               return user;
+            }
+        });
+    }
+}
+</user></user></pre><br />（4）最后就可以在Activity中或者别的地方使用了<br /><pre class="brush:java;">UserDao userDao = new UserDao(this);
+List<user> userList = userDao.findUserList();
+</user></pre><br /><strong>3、结尾</strong><br />总的来说，这个不是一个全自动化的ORM框架。之所以不封装成全自动化的ORM，是因为，个人认为还是自己写Sql语法比较放心，把语法交给ORM框架去生成一直觉得不可靠。可能愚见了。不过还是那句话，方便是向左，灵活是向右。我们要做的就是不停的修改框架，折中而取之。在写dao时，我们还可以继承BasicDao2，这个区别在于不用每次都传入Context，不过还没有经过实践的洗礼，以后如果稳定了，就可以用这个类了。";}

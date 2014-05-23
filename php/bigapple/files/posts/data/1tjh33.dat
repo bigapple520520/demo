@@ -1,0 +1,25 @@
+a:8:{s:2:"id";s:6:"1tjh33";s:5:"state";s:7:"publish";s:5:"title";s:19:"IOC注解注入View";s:4:"tags";a:2:{i:0;s:3:"IOC";i:1;s:12:"注解注入";}s:4:"date";s:10:"2014-04-30";s:4:"time";s:8:"14:23:57";s:11:"can_comment";s:1:"1";s:7:"content";s:1673:"<strong>1、简介</strong><br />IOC注解注入View模块非常简单，主要是使用注解@InjectView的方式注入XML中的View组件。以免重复调用findViewById这个方法。使代码更加整洁。----------summary_split----------<br /><br /><strong>2、@InjectView使用</strong><br />（1）第一种方法：首先你要继承，IOC框架中的AnActivity类。放心，继承AnActivity类，即使不使用框架的注解，对程序没有影响。例如下面代码：<br /><pre class="brush:java;">public class Main extends AnActivity {
+    @InjectView(R.id.textView)
+    private TextView textView;
+ 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.demo_ioc);
+ 
+        //textView = (TextView)findViewById(R.id.textView);
+        //注解已经帮你注入了View，所以这句代码就不用写了
+        textView.setText(&quot;你看我被注入了吧&quot;);
+    }
+}</pre><br />（2）第二种方法：如果不想继承AnActivity类来进行注解注入，还有一种方式可以设置，非常灵活，加句代码即可。废话不多说，贴上代码来如下：<br /><pre class="brush:java;">public class Main2 extends Activity {
+    @InjectView(R.id.textView)
+    private TextView textView;
+ 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        //调用之后，textView对象就被注入了
+        ViewUtils.inject(this);         
+        textView.setText(&quot;你看我又被注入了吧&quot;;);    }}
+</pre>";}

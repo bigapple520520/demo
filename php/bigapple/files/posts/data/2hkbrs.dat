@@ -1,0 +1,126 @@
+a:8:{s:2:"id";s:6:"2hkbrs";s:5:"state";s:7:"publish";s:5:"title";s:24:"Bitmap网络加载图片";s:4:"tags";a:2:{i:0;s:5:"Bimap";i:1;s:18:"网络图片加载";}s:4:"date";s:10:"2014-04-30";s:4:"time";s:8:"16:25:25";s:11:"can_comment";s:1:"1";s:7:"content";s:5926:"<strong>1、问题需求</strong><br />有一种需求是这样的，需要从网络上加载图片。例如，加载头像，加载广告图片等。如果从头自己写，需要考虑很多问题啊，例如：<br />（1）缓存问题，你不可能每次都去网络加载，用户那点可怜的流量被你这么白白浪费了不砍死你。<br />（2）说到缓存，你用什么缓存呢。据说一个应用安卓只分配给你16M内存，有些是24M根据不同手机而定。而现在的一张图片就好几M，几张图片下来你就爆了，还有在加载大图或者一次加载多张图片时很容易产生OOM。这就需要加载图片规格的调整。<br />（3）在加载多张图片快速切换时，一般的会出现卡顿现象，这就需要特殊处理。----------summary_split----------<br /><br /><strong>2、基本原理</strong><br />使用bigapple里面的bitmap模块就能很方便的搞定。他的基本原理是同时使用了两种缓存。内存缓存和磁盘缓存。每次都会先从内存缓存中取，没有再从磁盘中，最后才去网络地址上加载。当然你可以设置，只使用两个缓存的某一种。也可以一种都不用。不过建议是两个同时使用。内存缓存快但容量小，一般只会分配个8M都嫌多了。磁盘缓存相对多点，但是访问比内存慢，但是比起网络加载，那是分分钟的事。好了，废话不多说。贴上使用代码。<br /><br /><strong>3、使用步骤</strong><br />（1）这个模块最好自己保持单例就行。先写单例类，如下<br /><pre class="brush:java;">/**
+ * 从网络加载图片demo,封装单例的AnBitmapUtils实例，类似于一个门面模式，应用程序在使用时，可以屏蔽底层代码
+
+ * 
+ * 注意：
+
+ * 1、使用者在使用时请保持单例，这样内存缓存设置的最大阀值才能被限制住
+
+ * 2、创建AnBitmapUtils实例所用的Context请使用Application对象，不要用Activity对象，防止Activity内存泄露
+
+ * 
+ * @author xuan
+ * @version $Revision: 1.0 $, $Date: 2013-9-5 下午6:49:46 $
+ */
+public abstract class AnBitmapUtilsFace {
+    private static AnBitmapUtils instance;
+
+    /**
+     * 注意：请在程序一开始的时候就初始化
+     * 
+     * @param application
+     */
+    public static void init(Context application) {
+        if (null == instance) {
+            instance = new AnBitmapUtils(application);
+
+            // 设置内存最大缓存，可设置其他更多参数
+            instance.getGlobalConfig().setMemoryCacheSize(5 * 1024 * 1024);
+            instance.getGlobalConfig().setDiskCachePath(ContextUtils.getSdCardPath() + &quot;/xuan/cache&quot;);
+
+            // 设置全局默认显示参数，可设置其他更多参数
+            instance.getDefaultDisplayConfig().setShowOriginal(false);
+        }
+    }
+
+    /**
+     * 获取单例
+     * 
+     * @return
+     */
+    public static AnBitmapUtils getInstance() {
+        if (null == instance) {
+            throw new RuntimeException(&quot;请先初始化AnBitmapUtils实例，方法：在程序启动的时候调用init方法！&quot;);
+        }
+
+        return instance;
+    }
+
+    /**
+     * 显示图片
+     * 
+     * @param context
+     * @param imageView
+     */
+    public static void display(ImageView imageView, String uri) {
+        getInstance().display(imageView, uri);
+    }
+
+    /**
+     * 显示图片
+     * 
+     * @param imageView
+     * @param uri
+     * @param displayConfig
+     *            显示方式参数配制
+     */
+    public static void display(ImageView imageView, String uri, BitmapDisplayConfig displayConfig) {
+        getInstance().display(imageView, uri, displayConfig);
+    }
+
+    /**
+     * 可灵活配制一些自定义的显示参数
+     * 
+     * @param context
+     * @param imageView
+     * @param uri
+     * @param loading
+     * @param fail
+     */
+    public static void display(ImageView imageView, String uri, Bitmap bitmapLoading, Bitmap bitmapFail){
+        BitmapDisplayConfig displayConfig = new BitmapDisplayConfig();
+        displayConfig.setLoadingBitmap(bitmapLoading);// 加载中的图片显示
+        displayConfig.setLoadFailedBitmap(bitmapFail);// 加载失败的图片显示
+        display(imageView, uri, displayConfig);
+    }
+
+    /**
+     * 清理所有缓存，包括内存和磁盘
+     */
+    public static void clearCache() {
+        getInstance().clearCache();
+    }
+
+    /**
+     * 清理所有的缓存，包括内存和磁盘的，可设置自己的回调
+     * 
+     * @param afterClearCacheListener
+     *            缓存清理后的回调
+     */
+    public static void clearCache(AfterClearCacheListener afterClearCacheListener) {
+        getInstance().clearCache(afterClearCacheListener);
+    }
+}
+</pre><br />（2）然后在程序起来的时候在自定义的Application中初始化，只需要初始化一次就行，如下<br /><pre class="brush:java;">public class MyApplication extends Application {
+	@Override
+	public void onCreate() {
+            super.onCreate();
+	    // 图片加载器初始化
+	    AnBitmapUtilsFace.init(this);
+	}
+}
+</pre><br />（3）最后就可以在想加载图片的地方调用display方法即可以了。<br /><pre class="brush:java;">public class BitmapDemoActivity extends AnActivity {
+    @InjectView(R.id.imageView)
+    private ImageView imageView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.demo_bitmap_main);
+
+        //看，代码中一句搞定，当然还有一些定制化的加载方式，你可以很灵活的配置
+        AnBitmapUtilsFace.display(imageView, &quot;http://img7.9158.com/200709/01/11/53/200709018758949.jpg&quot;);
+    }
+}
+
+</pre>";}
