@@ -1,0 +1,4 @@
+# Ant properties file for building keel project
+
+# App info
+project.version=zxingutils-1.0.0-beta
