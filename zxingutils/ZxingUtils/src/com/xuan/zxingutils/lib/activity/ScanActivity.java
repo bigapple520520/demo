@@ -53,10 +53,13 @@ public class ScanActivity extends Activity implements Callback {
         super.onCreate(savedInstanceState);
         // 动态绘制界面
         FrameLayout frameLayout = new FrameLayout(this);
+
         surfaceView = new SurfaceView(this);
         frameLayout.addView(surfaceView);
+
         viewfinderView = new ViewfinderView(this, null);
         frameLayout.addView(viewfinderView);
+
         setContentView(frameLayout);
 
         // 初始化相机
@@ -74,8 +77,8 @@ public class ScanActivity extends Activity implements Callback {
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
-        characterSet = null;
 
+        characterSet = null;
         playBeep = true;
         AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
         if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {

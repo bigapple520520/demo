@@ -1,4 +1,4 @@
-package com.xuan.zxingutils.lib.decoding;
+package com.xuan.zxingutils.lib.activity;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public class ScanActivity extends Activity implements Callback {
     private ScanActivityHandler handler;
     private ViewfinderView viewfinderView;
     private SurfaceView surfaceView;
-    private boolean hasSurface;
+    private boolean hasSurface = false;
     private String characterSet;
 
     // 扫描成功后的声音和震动
@@ -51,6 +51,7 @@ public class ScanActivity extends Activity implements Callback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 动态绘制界面
         FrameLayout frameLayout = new FrameLayout(this);
 
         surfaceView = new SurfaceView(this);
@@ -60,9 +61,9 @@ public class ScanActivity extends Activity implements Callback {
         frameLayout.addView(viewfinderView);
 
         setContentView(frameLayout);
-        CameraManager.init(getApplication());
 
-        hasSurface = false;
+        // 初始化相机
+        CameraManager.init(getApplication());
     }
 
     @Override
@@ -76,8 +77,8 @@ public class ScanActivity extends Activity implements Callback {
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
-        characterSet = null;
 
+        characterSet = null;
         playBeep = true;
         AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
         if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
