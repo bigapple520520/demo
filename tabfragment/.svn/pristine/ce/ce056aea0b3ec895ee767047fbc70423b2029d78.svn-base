@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="app_name">tabframe_demo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Main</string>
+    
+    <string name="tab_btn_text1">家校互动</string>
+    <string name="tab_btn_text2">消息</string>
+    <string name="tab_btn_text3">通讯录</string>
+    <string name="tab_btn_text4">设置</string>
+    
+    <string name="just_sub_face">这个只是个子界面的demo</string>
+    
+    <string name="sub_face1">第一个界面</string>
+    <string name="sub_face2">第二个界面</string>
+    <string name="sub_face3">第三个界面</string>
+    <string name="sub_face4">第四个界面</string>
+    
+    <string name="back_btn_text">点击可以回调主界面的方法</string>
+    <string name="gotoother_btn_text">点击调转到子界面</string>
+
+</resources>
