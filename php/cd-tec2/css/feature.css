@@ -1,0 +1,29 @@
+﻿.technology{
+	padding: 4% 10% 4% 10%;
+}
+.technology h4{
+	font-size: 18px;
+	color: #7F8C8C;
+	font-weight: 100;
+	text-transform: capitalize;
+	display: block;
+	margin:10px 0 0px;
+}
+.technology_main{
+	margin:0 0 4%;
+}
+
+.technology_list{
+	width: 50%;
+	float: left;
+}
+
+.tech_para{
+	float: left;
+	width:80%;
+}
+.para{
+	font-size: 14px;
+	color: #7F8C8C;
+	line-height: 1.5em;
+}

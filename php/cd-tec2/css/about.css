@@ -1,0 +1,31 @@
+﻿/*---------------------------------------start span_of_3---------------------------------------*/
+.span_of_3{
+	margin: 4% 10% 4% 10%;
+	font-size: 14px;
+	color: #7F8C8C;
+	line-height: 1.5em;
+}
+.span_of_3 h3{
+	color: #E2534B;
+	font-size: 22px;
+	font-weight:normal;
+}
+.span1_of_3{
+	padding: 0;
+	position: relative;
+	width: 23%;
+	margin-right: 2%;
+	float: left;
+}
+.span1_of_3 h4{
+	font-size: 24px;
+	color: #7F8C8C;
+	margin-bottom: 20px;
+	font-weight:normal;
+}
+.span1_of_3 p{
+	font-size: 14px;
+	color: #888888;
+	line-height: 1.8em;
+}
+/*---------------------------------------end span_of_3---------------------------------------*/

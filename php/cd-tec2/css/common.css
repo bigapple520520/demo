@@ -1,0 +1,120 @@
+﻿/*---------------------------------------start common tag---------------------------------------*/
+body {
+    margin: 0;
+	padding: 0;
+	background:#ffffff;
+	font-size: 100%;
+}
+img {
+	border:none;
+}
+a {
+	text-decoration: none;
+}
+/*---------------------------------------start common tag---------------------------------------*/ 
+
+/*---------------------------------------start header---------------------------------------*/
+.header_bg{
+	background: #76C7C0;
+}
+.header{
+	padding: 4% 10% 4% 10%;
+}
+.logo{
+	margin-top: 10px;
+	float: left;
+}
+.h_menu{
+	float: right;
+}
+.menu{
+	display:block;
+	list-style: none;
+}
+.menu li{
+	float: left;
+	position:relative;
+	z-index:100;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+.menu li a{
+	text-decoration: none;
+	font-size: 16px;
+	padding: 10px 24px;
+	display: block;
+	color: #ffffff;
+}
+.menu li.activate a,.menu li a:hover{
+	background: #62A29E;
+	box-shadow: inset 0px -4px 0px #47817E;
+	border-radius: 4px;
+}
+/*---------------------------------------end header---------------------------------------*/
+
+/*---------------------------------------start footer1---------------------------------------*/
+.footer1_bg{
+	background: #6AB3AC;
+}
+.footer1{
+	padding: 2% 0;
+}
+.copy p{
+	color: #ffffff;
+	font-size: 14px;
+	line-height: 1.8em;
+	text-align: center;
+}
+.copy p a{
+	color:#E2534B; 
+}
+.copy p a:hover{
+	color: #ffffff;
+	text-decoration: none;
+}
+/*---------------------------------------end footer1---------------------------------------*/
+
+/*---------------------------------------start main_bg---------------------------------------*/
+.main_bg{
+	background: #F3F3F3;
+}
+.main_grid1{
+	padding: 0.5% 10% 0.5% 10%;
+}
+.main_grid1 h3{
+	color: #888888;
+	font-size: 24px;
+	font-weight: normal;
+}
+.main_grid1 a{
+	color: #62A09D
+} 
+/*---------------------------------------end main_bg---------------------------------------*/
+
+.para{
+	font-size: 14px;
+	color: #7F8C8C;
+	line-height: 1.5em;
+}
+.main_btm1{
+	background: #ffffff;
+}
+.clear {
+	clear: both;
+}
+.btn {
+    background: #62A29E;
+	box-shadow: inset 0px -4px 0px #47817E;
+	border-radius: 4px;
+	text-decoration: none;
+	font-size:14px;
+	color:#ffffff;
+	border: none;
+	cursor: pointer;
+	padding: 14px 48px;
+	display: inline-block;
+	padding: 12px 30px;
+}
+.btn:hover{
+	background: #47817E;
+}

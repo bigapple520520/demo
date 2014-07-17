@@ -1,0 +1,57 @@
+﻿.pricing2{
+	margin:4% 10% 4% 10%;
+	text-align:center;
+}
+.pricing2 h5 {
+	color: #62A09D;
+	font-size: 34px;
+	margin-bottom: 2%;
+	font-weight: 600;
+}
+.pricing2  h6 {
+	font-size: 16px;
+	color: #888888;
+	line-height: 1.8em;
+	margin: 0;
+	font-weight: normal;
+}
+
+.pricing_table {
+	line-height:150%;
+	margin: 4% auto;
+	width: 100%;
+	list-style: none;
+	padding-left:2%;
+	padding-right:2%;
+}
+.pricing_table h3 {
+	font-size: 20px;
+	text-transform: uppercase;
+	padding: 15px 0;
+	background: #333;
+	margin: -10px 0 1px 0;
+}
+.price_block{
+	float: left;
+	width: 23.9%;
+	margin-right: 0.1%;
+}
+
+.price_block:hover h3 {
+	background: #222;
+}
+.price_block:hover{
+	color: #ffffff;
+}
+.features {
+	background: #e8e8e8;
+	color: #191919;
+	list-style: none;
+	padding-left: 0px;
+}
+.features li {
+	padding: 10px 15px;
+	border-bottom: 1px solid #d8d8d8;
+	font-size: 13px;
+	color: rgb(99, 99, 99);
+}

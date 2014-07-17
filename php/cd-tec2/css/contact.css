@@ -1,0 +1,80 @@
+﻿.contact{
+	padding: 4% 10% 4% 10%;
+}
+.contact p.style{
+	background: #e0e0e0;
+	padding: 20px;
+	font-size: 14px;
+	color: #7F8C8C;
+	line-height: 1.5em;
+}
+.contact_main{
+	margin: 4% 0;
+}
+
+/*公司地址信息*/
+.company_ad{
+	width: 30%;
+	float: left;
+}
+.company_ad h2{
+	margin: 0 0 20px;
+	font-size: 24px;
+	color: #7F8C8C;
+	font-weight:normal;
+}
+.company_ad p{
+	font-size: 14px;
+	color: #888888;
+	line-height: 1.8em;
+}
+
+/*留言表单*/
+.contact-form{
+	width: 65%;
+	float: left;
+}
+
+.contact-form h2{
+	margin: 0 0 20px;
+	font-size: 24px;
+	color: #7F8C8C;
+	font-weight:normal;
+}
+.contact-form form input[type="text"], .contact-form form textarea {
+    font-family: 'roboto_condensedregular';
+	margin: 20px 0;
+	box-shadow: none;
+	border: 1px solid #C7C7C7;
+	background: #DDDDDD;
+	color: #888888;
+	line-height: 1.8em;
+	display: block;
+	width: 100%;
+	padding: 6px 12px;
+	font-size: 13px;
+	outline: none;
+}
+.contact-form  form textarea {
+	resize: none;
+	height: 160px;
+}
+.contact-form form input[type="text"]:hover, .contact-form form textarea:hover {
+	border-color: #b4b4b4;
+}
+.contact-form form input[type="text"]:focus, .contact-form form textarea:focus {
+	border: 1px solid #b4b4b4;
+}
+.contact-form form input[type="submit"] {
+	font-size: 14px;
+	color: #FFFFFF;
+	padding: 12px 30px;
+	background: #62A29E;
+	line-height: 20px;
+	border: none;
+	border-radius: 2px;
+	box-shadow: inset 0px -4px 0px #47817E;
+}
+.contact-form form input[type="submit"]:hover{
+	background: #47817E;	
+}
