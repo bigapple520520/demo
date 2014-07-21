@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <plugins>
+        <plugin class="com.xuan.weixinserver.client.InitTaskPlugin" />
+    </plugins>
+    
+    <interceptors>
+        <interceptor class="com.xuan.weixinserver.client.AutowireInterceptor" />
+    </interceptors>
+    
+	<messages>
+	    <!-- 测试消息处理 -->
+	    <message class="com.xuan.weixinserver.message.help.FromWeixinHelpMessage">
+	        <action class="com.xuan.weixinserver.server.action.FromWeixinHelpMessageAction" />
+	    </message>
+	    
+	    <message class="com.xuan.weixinserver.message.CommonMessage">
+	        <action class="com.xuan.weixinserver.server.action.CommonMessageAction" />
+	    </message>
+	</messages>
+</config>

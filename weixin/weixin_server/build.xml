@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${app.name}" default="help" xmlns:artifact="urn:maven-artifact-ant">
+    
+    <tstamp>
+        <format property="date.today" pattern="yyyyMMdd" />
+    </tstamp>
+    
+    <target name="help">
+        <echo message="" />
+        <echo message="${app.name} build file" />
+        <echo message="-----------------------------------" />
+        <echo message="" />
+        <echo message="Available targets are:" />
+        <echo message="" />
+        <echo message="compile                 --> Compile sources" />
+        <echo message="" />
+        <echo message="jar          --> Only release the app jar" />
+        <echo message="release-step       --> Release the app jar and all jars that under dir lib" />
+        <echo message="" />
+        <echo message="clean                   --> Delete compiled classes and ZIP files" />
+        <echo message="cleanToday              --> Delete compiled classes and ZIP files of today" />
+        <echo message="" />
+    </target>
+    
+    <property file="build.properties" />
+    
+    <target name="init_maven">
+        <!--
+        remember to setM2_REPO before use this build.xml,for example ineclispe:
+        "Window→Preferences→Ant→Runtime",add a new property named"M2_REPO" and set it value point to the path of your maven
+        local repository;Or you can set it in build.properties.　You need doone (andonlyone) of them.
+        -->
+        <path id="maven-ant-tasks.classpath"
+              path="${M2_REPO}/org/apache/maven/maven-ant-tasks/2.1.3/maven-ant-tasks-2.1.3.jar" />
+        <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+                 uri="urn:maven-artifact-ant"
+                 classpathref="maven-ant-tasks.classpath" />
+        <artifact:pom id="maven.project" file="pom.xml" />
+        <artifact:dependencies pathId="classpath.build" filesetid="maven.fileset.build">
+            <pom refid="maven.project" />
+        </artifact:dependencies>
+        <artifact:dependencies pathId="classpath.runtime" filesetid="maven.fileset.runtime" useScope="runtime">
+            <pom refid="maven.project" />
+        </artifact:dependencies>
+    </target>
+
+    <target name="maven_info" depends="init_maven">
+        <echo>Maven build directoryis ${maven.project.build.directory}</echo>
+        <echo>Maven build finalNameis ${maven.project.build.finalName}</echo>
+        <echo>Maven build sourceDirectory directoryis ${maven.project.build.sourceDirectory}</echo>
+        <echo>Maven build outputDirectory directoryis ${maven.project.build.outputDirectory}</echo>
+        <echo>Maven build scriptSourceDirectory directoryis ${maven.project.build.testSourceDirectory}</echo>
+        <echo>Maven build testOutputDirectory directoryis ${maven.project.build.testOutputDirectory}</echo>
+        <echo>Maven build scriptSourceDirectory directoryis ${maven.project.build.scriptSourceDirectory}</echo>
+        <echo>Maven build resourceDirectory directoryis ${maven.project.build.resources}</echo>
+        <property name="target.jar.name"
+                  value="${maven.project.build.directory}/${maven.project.build.finalName}.jar" />
+        <echo>Maven build script SourceDirectory directoryis ${target.jar.name}</echo>
+    </target>
+
+    <target name="clean" depends="init_maven">
+        <echo>clean build directory:${maven.project.build.directory}/${path.package}</echo>
+        <delete dir="${maven.project.build.directory}/${path.package}" includes="**/*" />
+    </target>
+
+    <target name="cleanToday" depends="init_maven">
+        <echo>clean build directory:${maven.project.build.directory}/${path.package}/${date.today}</echo>
+        <delete dir="${maven.project.build.directory}/${path.package}/${date.today}" includes="**/*" />
+    </target>
+
+    <!-- 创建字节码存放目录 -->
+    <target name="init_path" depends="maven_info,cleanToday">
+        <echo>make dir for javacompile:${maven.project.build.outputDirectory}</echo>
+        <mkdir dir="${maven.project.build.outputDirectory}" />
+    </target>
+
+    <!-- 编译源文件 -->
+    <target name="compile" description="compile" depends="init_maven">
+        <javac srcdir="${maven.project.build.sourceDirectory}"
+               destdir="${maven.project.build.outputDirectory}"
+               classpathref="classpath.build" />
+    </target>
+
+    <!-- 归档字节码 -->
+    <target name="jar" depends="compile">
+        <delete file="${maven.project.build.directory}/${maven.project.build.finalName}.jar" failonerror="false" />
+        <jar destfile="${maven.project.build.directory}/${maven.project.build.finalName}.jar"
+             basedir="${maven.project.build.outputDirectory}">
+            <exclude name="**/*.properties" />
+            <exclude name="**/*.xml" />
+        </jar>
+    </target>
+
+    <!-- 创建打包目录结构 -->
+    <target name="package_prepare" depends="init_maven">
+        <echo>clean package directory:${maven.project.build.directory}/${path.package}</echo>
+        <mkdir dir="${maven.project.build.directory}/${path.package}" />
+        <mkdir dir="${maven.project.build.directory}/${path.package}/${date.today}" />
+        <mkdir dir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.lib}" />
+        <mkdir dir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.config}" />
+        <mkdir dir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.log}" />
+    </target>
+    
+    <!-- 拷贝config目录 -->
+    <target name="copyResource" depends="init_maven">
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.config}">
+            <fileset dir="src/main/resources">
+                <exclude name="**/applicationConfig.properties" />
+                <exclude name="**/jdbc.properties" />
+                <exclude name="**/logback.xml" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- 拷贝lib目录  -->
+    <target name="copyLib" depends="init_maven">
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.lib}">
+            <fileset refid="maven.fileset.runtime" />
+            <mapper type="flatten" />
+        </copy>
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.lib}"
+              file="${maven.project.build.directory}/${maven.project.build.finalName}.jar">
+        </copy>
+    </target>
+
+    <!-- 拷贝bin目录 -->
+    <target name="copyBin-common" depends="init_maven">
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.bin}">
+            <fileset dir="src/main/bin/common">
+            </fileset>
+        </copy>
+    </target>
+    <target name="copyBin-test" depends="init_maven">
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.bin}">
+            <fileset dir="src/main/bin/test">
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="package-common" depends="package_prepare,copyResource,copyLib,copyBin-common" />
+    <target name="package-test" depends="package_prepare,copyResource,copyLib,copyBin-test" />
+    
+    <target name="release-common" depends="init_path,compile,jar,package-common" />
+    <target name="release-test" depends="init_path,compile,jar,package-test" />
+
+    <!-- 打包压缩发布 -->
+    <macrodef name="zipfiles">
+        <attribute name="targetname" />
+        <attribute name="zipname" />
+        
+        <sequential>
+            <!-- 替换特定版本的配置文件 -->
+            <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.config}">
+                <fileset dir="resources/@{targetname}" />
+            </copy>
+            
+            <!-- 重命名jar名字 -->
+            <move file="${maven.project.build.directory}/${path.package}/${date.today}/lib/${maven.project.build.finalName}.jar"
+                  tofile="${maven.project.build.directory}/${path.package}/${date.today}/lib/${app.name}-release-@{targetname}.jar" />
+            
+            <!-- 删除原有压缩包 -->
+            <delete file="${maven.project.build.directory}/${path.package}/${app.name}-@{targetname}-release-${date.today}.zip" />
+            
+            <!-- 打包压缩 -->
+            <zip destfile="${maven.project.build.directory}/${path.package}/@{zipname}">
+                <fileset dir="${maven.project.build.directory}/${path.package}/${date.today}">
+                </fileset>
+            </zip>
+        </sequential>
+    </macrodef>
+    
+    <!-- 内网测试 -->
+    <target name="zip-test" depends="release-test" description="release target for test">
+        <zipfiles targetname="test" zipname="test-${app.name}-${app.version}-snapshot-${date.today}.zip" />
+    </target>
+    
+    <!-- 万朋聊的发布 -->
+    <target name="zip-common" depends="release-common" description="release target for common">
+        <zipfiles targetname="common" zipname="wpchat-${app.name}-${app.version}-release-${date.today}.zip" />
+    </target>
+    
+    <!-- 万朋聊的发布 -->
+    <target name="zip-nbrrt" depends="release-common" description="release target for nbrrt">
+        <zipfiles targetname="nbrrt" zipname="nbrrt-${app.name}-${app.version}-release-${date.today}.zip" />
+    </target>
+    
+    <!-- 陕西省厅的发布 -->
+    <target name="zip-snst" depends="release-common" description="release target for snst">
+        <zipfiles targetname="snst" zipname="sn-${app.name}-${app.version}-release-${date.today}.zip" />
+    </target> 
+</project>

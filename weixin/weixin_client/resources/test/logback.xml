@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: logback.xml 50034 2014-07-18 02:02:39Z xuan $ -->
+
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} %.-1level %logger{32}:%line -&gt; %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../logs/weixinserver.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} %.-1level %logger{32}:%line -&gt; %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../logs/weixinserver.log.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="Msg" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../msg_storage/msg.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../msg_storage/msg.log.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100KB</MaxFileSize>
+		</triggeringPolicy>
+    </appender>
+    
+    <logger name="org.apache.commons.beanutils.PropertyUtils" level="ERROR" additivity="false"/>
+    <logger name="org.apache.mina" level="ERROR"></logger>
+    <logger name="net.zdsoft.weixinserver" level="DEBUG"></logger>
+    <logger name="com.winupon.base.wpcf" level="INFO"></logger>
+    <logger name="com.winupon.base.wpcf.filter.ProtocolFilter" level="INFO"></logger>
+    <logger name="com.winupon.base.wpcf.core.WPCFPServerSessionHandler" level="INFO"></logger>
+    <logger name="com.winupon.base.wpcf.session.ServerSessionManager" level="INFO"></logger>
+    
+    <logger name="net.zdsoft.weixinserver.server.msgdeal.hub" level="ERROR"></logger>
+    <logger name="net.zdsoft.weixinserver.server.task" level="ERROR"></logger>
+    <logger name="net.zdsoft.weixinserver.server.task.PushMessageExtTask" level="ERROR"></logger>
+    
+    <root level="ERROR">
+        <appender-ref ref="Console" />
+        <appender-ref ref="R" />
+    </root>
+</configuration>
