@@ -17,8 +17,8 @@
 
     <context:annotation-config />
     
-    <context:component-scan base-package="com.xuan.weixinserver.dao.impl"></context:component-scan>
-    <context:component-scan base-package="com.xuan.weixinserver.service.impl"></context:component-scan>
+    <context:component-scan base-package="com.xuan.weixinclient.dao.impl"></context:component-scan>
+    <context:component-scan base-package="com.xuan.weixinclient.service.impl"></context:component-scan>
 
     <aop:aspectj-autoproxy />
     
@@ -90,9 +90,7 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
     </aop:config>
     
-    <bean id="weiXinServer" class="com.xuan.weixinserver.server.WeiXinServer"></bean>
-    
     <!-- 本地缓存对象-->
     <bean id="cache" class="net.zdsoft.keel.cache.provider.SimpleCache" />
-    <bean id="serviceLocator" class="com.xuan.weixinserver.client.ServiceLocator" /> 
+    <bean id="serviceLocator" class="com.xuan.weixinclient.client.ServiceLocator" /> 
 </beans>

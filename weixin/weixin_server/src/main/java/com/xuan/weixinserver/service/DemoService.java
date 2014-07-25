@@ -13,7 +13,7 @@ import com.xuan.weixinserver.entity.AccountExt;
  * @author xuan
  * @version $Revision: 1.0 $, $Date: 2013-5-10 上午11:00:50 $
  */
-public interface AccountExtService {
+public interface DemoService {
 
 
     /**

@@ -15,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 import net.zdsoft.keel.util.Validators;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
@@ -83,8 +82,6 @@ public class MsgClient {
      *            登陆人的账号
      * @param token
      *            票据（tocc有两种登陆方式：密码或票据）
-     * @param isForNotification
-     *            是否用于推送通知，当安卓程序处于开启状态时应该为false，退出时应该为true
      */
     public void init(String serverAddr, int serverPort, String loginId, String token) {
         if (!isClosed) {
@@ -94,14 +91,6 @@ public class MsgClient {
         isClosed = false;
         client = new WpcfClient("weixinclient", serverAddr, serverPort, loginId, "", new WeixinClientHandler(), 30, 20,null);// 设置，业务逻辑处理线程池数30，心跳时间间隔为20秒
         client.setToken(token);
-
-        IoBuffer buf = IoBuffer.allocate(35);
-        buf.put((byte) 0);// 服务器只支持0这种状态
-        buf.put(com.winupon.base.wpcf.util.StringUtils.getBytes(loginId, AbstractMessage.UTF8));
-        buf.flip();
-        byte[] bs = new byte[buf.remaining()];
-        buf.get(bs);
-        client.setExtendedInformation(bs);
 
         /* 设置断开了服务器连接的监听 */
         client.setDisconnectedListener(new MDisconnectedListener());
@@ -196,8 +185,6 @@ public class MsgClient {
         if (isClosed) {
             return null;
         }
-
-
 
         long startTimeMillis = System.currentTimeMillis();
         // 生成消息的唯一标识

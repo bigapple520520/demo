@@ -9,9 +9,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.xuan.weixinserver.dao.AccountExtDao;
+import com.xuan.weixinserver.dao.DemoDao;
 import com.xuan.weixinserver.entity.AccountExt;
-import com.xuan.weixinserver.service.AccountExtService;
+import com.xuan.weixinserver.service.DemoService;
 
 /**
  * 账号扩展信息
@@ -20,13 +20,13 @@ import com.xuan.weixinserver.service.AccountExtService;
  * @version $Revision: 1.0 $, $Date: 2013-5-10 上午11:02:12 $
  */
 @Service
-public class AccountExtServiceImpl implements AccountExtService {
+public class DemoServiceImpl implements DemoService {
     @Resource
-    private AccountExtDao accountExtDao;
+    private DemoDao demoDao;
 
     @Override
     public AccountExt getAccountExtByAccountId(String accountId) {
-        return accountExtDao.findAccountExtByAccountId(accountId);
+        return demoDao.findAccountExtByAccountId(accountId);
     }
 
 }

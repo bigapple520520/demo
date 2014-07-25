@@ -8,9 +8,7 @@
         <interceptor class="com.xuan.weixinserver.client.AutowireInterceptor" />
     </interceptors>
     
-    <!-- 服务器端消息处理 -->
 	<messages>
-	    <!-- 测试消息处理 -->
 	    <message class="com.xuan.weixinserver.message.help.FromWeixinHelpMessage">
 	        <action class="com.xuan.weixinserver.action.FromWeixinHelpMessageAction" />
 	    </message>

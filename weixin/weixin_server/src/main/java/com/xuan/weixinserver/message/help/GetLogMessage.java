@@ -8,7 +8,6 @@ package com.xuan.weixinserver.message.help;
 import com.xuan.weixinserver.message.common.AbstractMessage;
 import com.xuan.weixinserver.util.CommandConstants;
 
-
 /**
  * 获取日志消息
  *

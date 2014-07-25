@@ -27,16 +27,14 @@ import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.code.yanf4j.buffer.IoBuffer;
 import com.winupon.base.wpcf.WpcfServer;
 import com.winupon.base.wpcf.WpcfServerHandler;
 import com.winupon.base.wpcf.util.SecurityUtils;
 import com.xuan.weixinserver.message.common.AbstractMessage;
 import com.xuan.weixinserver.message.common.SplitedMessage;
-import com.xuan.weixinserver.service.AccountExtService;
+import com.xuan.weixinserver.service.DemoService;
 import com.xuan.weixinserver.wx.action.ActionContext;
 import com.xuan.weixinserver.wx.action.ActionInvoker;
-import com.xuan.weixinserver.wx.session.WxSession;
 import com.xuan.weixinserver.wx.session.WxSessionManager;
 
 /**
@@ -49,10 +47,8 @@ public class WeiXinServer {
     private static final Logger log = LoggerFactory.getLogger(WeiXinServer.class);
 
     @Resource
-    private AccountExtService accountExtService;
-
-
-    private static WpcfServer wpcfServer;// 微信服务端
+    private DemoService accountExtService;
+    private static WpcfServer wpcfServer;
 
     // 缓存分割的消息
     private final ConcurrentMap<String, ConcurrentMap<Integer, SplitedMessage>> splitedMessageMap = new ConcurrentHashMap<String, ConcurrentMap<Integer, SplitedMessage>>();
@@ -158,32 +154,7 @@ public class WeiXinServer {
 
         @Override
         public boolean verifyToken(String loginId, String token, byte[] otherMsg) {
-            /* 登录服务器验证token为accountId进行MD5。 */
-            /* otherMsg为33个字节，第一个字：1表示可通知登录，0表示登录，现在只支持0，后32个字节表示acountId */
-            IoBuffer buf = IoBuffer.wrap(otherMsg);
-            boolean isForNotification = buf.get() == 1;
-            byte[] bs = new byte[32];
-            buf.get(bs);
-
-            String accountId = com.winupon.base.wpcf.util.StringUtils.newString(bs, AbstractMessage.UTF8);
-            log.debug("用户登录：loginId={}, accountId={}, token={}", new String[] { loginId, accountId, token });
-
-            /* token校验 */
-            boolean isLogined = false;
-            if (StringUtils.equals(SecurityUtils.encodeByMD5(accountId), token)) {
-                if (!isForNotification) {
-                    WxSessionManager.getInstance().putSession(loginId, new WxSession());
-                    isLogined = true;
-                }
-                else {
-                    log.error("登录失败。原因：该服务器不支持可通知登录。");
-                }
-            }
-            else {
-                log.error("登录失败。原因：登录凭证校验错误。");
-            }
-
-            return isLogined;
+        	return StringUtils.equals(SecurityUtils.encodeByMD5(loginId), token);
         }
 
         @Override

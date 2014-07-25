@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.winupon.base.wpcf.core.WPCFPConstants;
 import com.winupon.base.wpcf.util.SecurityUtils;
+import com.xuan.weixinserver.message.CommonMessage;
+import com.xuan.weixinserver.message.CommonRespMessage;
 import com.xuan.weixinserver.message.help.FromWeixinHelpMessage;
 import com.xuan.weixinserver.message.help.FromWeixinHelpRespMessage;
 import com.xuan.weixinserver.message.help.GetLogMessage;
@@ -117,6 +119,9 @@ public abstract class AbstractMessage {
 
         messageInstancesMap.put(CommandConstants.TOK_GET_LOG_MSG, new GetLogMessage());
         messageInstancesMap.put(CommandConstants.TOK_SPLITED, new SplitedMessage());
+
+        messageInstancesMap.put(CommandConstants.TOK_FROM_CLIENT_COMMON_MSG, new CommonMessage());
+        messageInstancesMap.put(CommandConstants.TOK_FROM_CLIENT_COMMON_RESP_MSG, new CommonRespMessage());
     }
 
 }
