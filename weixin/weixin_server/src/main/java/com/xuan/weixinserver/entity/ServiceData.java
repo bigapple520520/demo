@@ -1,5 +1,6 @@
 package com.xuan.weixinserver.entity;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,6 +15,11 @@ public class ServiceData {
 	 * 一个工程的标识
 	 */
 	private String serviceId;
+	
+	/**
+	 * 记录最近一次同步时间
+	 */
+	private Date lastSyncTime;
 
 	/**
 	 * 如果服务器端修改了数据，那设置这个状态是true，知道发起同步成功后再设置为false。<br>
@@ -60,6 +66,14 @@ public class ServiceData {
 
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
+	}
+
+	public Date getLastSyncTime() {
+		return lastSyncTime;
+	}
+
+	public void setLastSyncTime(Date lastSyncTime) {
+		this.lastSyncTime = lastSyncTime;
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
 import com.xuan.weixinclient.service.DataService;
+import com.xuan.weixinclient.service.impl.DataServiceImpl;
 
 
 /**
@@ -39,7 +40,8 @@ public class ServiceLocator implements BeanFactoryAware {
     //--------------------------------------------特定Bean------------------------------------------------
 
     public static DataService getDataService(){
-    	return beanFactory.getBean(DataService.class);
+    	//return beanFactory.getBean(DataService.class);
+    	return new DataServiceImpl();
     }
 
 }

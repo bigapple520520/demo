@@ -28,7 +28,7 @@ public class Catalina {
 
     	String loginId = SecurityUtils.encodeByMD5(username+password);
     	String token = SecurityUtils.encodeByMD5(loginId);
-    	MsgClient.getInstance().init("192.168.0.103", 10000, loginId, token);
+    	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
 
     	ScheduledTaskExecutorFactory.getScheduledTaskExecutor().scheduleWithFixedDelay(new ScanDataTask(), INTERVAL, INTERVAL, TimeUnit.SECONDS);
     }
