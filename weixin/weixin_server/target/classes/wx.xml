@@ -13,8 +13,11 @@
 	        <action class="com.xuan.weixinserver.action.FromWeixinHelpMessageAction" />
 	    </message>
 	    
-	    <message class="com.xuan.weixinserver.message.CommonMessage">
-	        <action class="com.xuan.weixinserver.action.CommonMessageAction" />
+	    <message class="com.xuan.weixinserver.message.FromClientMessage">
+	        <action class="com.xuan.weixinserver.action.FromClientMessageAction" />
 	    </message>
+	    <message class="com.xuan.weixinserver.message.ToClientRespMessage">
+            <action class="com.xuan.weixinserver.action.ToClientRespMessageAction" />
+        </message>
 	</messages>
 </config>

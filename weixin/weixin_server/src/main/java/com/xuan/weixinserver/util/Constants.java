@@ -12,4 +12,5 @@ package com.xuan.weixinserver.util;
  * @version $Revision: 1.0 $, $Date: 2014-2-28 下午4:59:09 $
  */
 public abstract class Constants {
+	public static final int ACTION_GET_DATA = 1;
 }

@@ -4,7 +4,7 @@
 
     <groupId>net.zdsoft</groupId>
     <artifactId>weixinserver</artifactId>
-    <version>wx-client</version>
+    <version>wx1.0</version>
     <packaging>jar</packaging>
 
     <name>weixinserver</name>

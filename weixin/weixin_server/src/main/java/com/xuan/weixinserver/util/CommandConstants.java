@@ -19,8 +19,11 @@ public abstract class CommandConstants {
     public static final int TOK_GET_LOG_MSG = 0x00009002;// 获取日志消息
 
     // 命令常量定义，请求与响应配对使用，值相差0x80000000
-    public static final int TOK_FROM_CLIENT_COMMON_MSG = 0x00001100; // 普通消息
-    public static final int TOK_FROM_CLIENT_COMMON_RESP_MSG = 0x80001100; //响应
+    public static final int TOK_FROM_CLIENT_MSG = 0x00001100; // 客户端发送给服务器端
+    public static final int TOK_FROM_CLIENT_RESP_MSG = 0x80001100; //响应
+
+    public static final int TOK_TO_CLIENT_MSG = 0x00001200; // 服务器端发送给客户端
+    public static final int TOK_TO_CLIENT_RESP_MSG = 0x80001200; //响应
 
     public static final int TOK_SPLITED = 0x00005000; // 表示被分割的消息
 
