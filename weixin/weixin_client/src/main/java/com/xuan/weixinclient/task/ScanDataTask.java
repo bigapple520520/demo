@@ -5,6 +5,7 @@ import java.util.concurrent.TimeoutException;
 import net.zdsoft.keel.util.concurrent.AbstractRunnableTask;
 
 import com.winupon.base.wpcf.util.UUIDUtils;
+import com.xuan.weixinclient.client.Constants;
 import com.xuan.weixinclient.client.MsgClient;
 import com.xuan.weixinclient.client.ServiceLocator;
 import com.xuan.weixinserver.message.CommonMessage;
@@ -26,16 +27,20 @@ public class ScanDataTask extends AbstractRunnableTask {
 	@Override
 	public void processTask() throws Exception {
 		try {
-			//获取全量数据
+			/*获取客户端的全量数据，并编码成Json格式，方便传输*/
 			String retStr = ServiceLocator.getDataService().getAllDataJsonStr();
-			log.debug("发起一次同步，全量数据："+retStr);
+			log.debug("发起一次同步，全量数据：" + retStr);
 
-			//同步到中央服务器
-			CommonMessage commonMessage = new CommonMessage(1, retStr);
+			/*构造消息把数据发送到服务器端，对服务器端返回暂时不处理，只打印日志*/
+			CommonMessage commonMessage = new CommonMessage(Constants.ACTION_SYNC_DATA, retStr);
 			AbstractMessage abstractMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), commonMessage, 5000);
 			CommonRespMessage message = (CommonRespMessage)abstractMessage;
 
-			log.debug("同步成功：" + message.getMessage());
+			if(Constants.ACTION_SYNC_DATA == message.getType()){
+				log.debug("同步结果：" + message.getMessage());
+			}else{
+				log.debug("发送和返回的消息类型不匹配，请联系开发");
+			}
 		}
 		catch(TimeoutException e1){
 			log.error("网络超时，请检查网络设置，原因："+e1.getMessage(),e1);

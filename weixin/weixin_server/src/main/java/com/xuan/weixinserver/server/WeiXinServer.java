@@ -32,7 +32,7 @@ import com.winupon.base.wpcf.WpcfServerHandler;
 import com.winupon.base.wpcf.util.SecurityUtils;
 import com.xuan.weixinserver.message.common.AbstractMessage;
 import com.xuan.weixinserver.message.common.SplitedMessage;
-import com.xuan.weixinserver.service.DemoService;
+import com.xuan.weixinserver.service.ServiceDataService;
 import com.xuan.weixinserver.wx.action.ActionContext;
 import com.xuan.weixinserver.wx.action.ActionInvoker;
 import com.xuan.weixinserver.wx.session.WxSessionManager;
@@ -47,7 +47,7 @@ public class WeiXinServer {
     private static final Logger log = LoggerFactory.getLogger(WeiXinServer.class);
 
     @Resource
-    private DemoService accountExtService;
+    private ServiceDataService accountExtService;
     private static WpcfServer wpcfServer;
 
     // 缓存分割的消息

@@ -33,4 +33,8 @@ public class TableLine {
 		return map.get(key);
 	}
 
+	public Map<String, String> getMap() {
+		return map;
+	}
+
 }

@@ -10,7 +10,7 @@ import com.xuan.weixinclient.service.DataService;
 
 /**
  * 获取数据全量表数据的Service实现，Json的数据结构如下：<br>
- *{"type":"1","message":"{"serviceId":"111","tables":[{"tableName":"aaa", "tableData":[{"name":"xuan","age","111"}]}]}"}
+ *{"success":"1","message":"{"serviceId":"111","tables":[{"tableName":"aaa", "tableData":[{"name":"xuan","age","111"}]}]}"}
  *
  * @author xuan
  * @version 创建时间：2014-7-25 下午4:27:31

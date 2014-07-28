@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.xuan.weixinserver.util;
+package com.xuan.weixinclient.client;
 
 /**
  * 系统参数常量

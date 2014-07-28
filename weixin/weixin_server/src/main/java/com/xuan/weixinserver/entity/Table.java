@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 创建时间：2014-7-25 下午3:01:17
  */
 public class Table {
+	private String name;//表名
+
 	/**
 	 * 用来存放一张表的数据，其中key可以是每行数据的唯一标识例如id，value是一行数据对象
 	 */
@@ -30,8 +32,20 @@ public class Table {
 	 * @param key
 	 * @param tableLine
 	 */
-	public void put(String key, TableLine tableLine){
+	public void add(String key, TableLine tableLine){
 		map.put(key, tableLine);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Map<String, TableLine> getMap() {
+		return map;
 	}
 
 }

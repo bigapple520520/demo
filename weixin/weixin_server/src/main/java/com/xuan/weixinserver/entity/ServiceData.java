@@ -15,7 +15,7 @@ public class ServiceData {
 	 * 一个工程的标识
 	 */
 	private String serviceId;
-	
+
 	/**
 	 * 记录最近一次同步时间
 	 */
@@ -38,7 +38,7 @@ public class ServiceData {
 	 * @param key
 	 * @param table
 	 */
-	public void putTable(String key, Table table){
+	public void addTable(String key, Table table){
 		map.put(key, table);
 	}
 
@@ -74,6 +74,10 @@ public class ServiceData {
 
 	public void setLastSyncTime(Date lastSyncTime) {
 		this.lastSyncTime = lastSyncTime;
+	}
+
+	public Map<String, Table> getMap() {
+		return map;
 	}
 
 }
