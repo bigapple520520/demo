@@ -46,11 +46,11 @@
 
     <dependencies>
         <dependency>  
-            <groupId>wx-client</groupId>  
-            <artifactId>wx-client</artifactId>  
+            <groupId>com.xuan</groupId>  
+            <artifactId>client-wx1.0</artifactId>  
             <version>1.0</version>  
             <scope>system</scope>  
-            <systemPath>${project.basedir}/libs/wx-client.jar</systemPath>  
+            <systemPath>${project.basedir}/libs/client-wx1.0.jar</systemPath>  
         </dependency>
         <dependency>  
             <groupId>keel</groupId>  

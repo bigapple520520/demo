@@ -1,12 +1,13 @@
 package com.xuan.weixinclient.service.impl;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.xuan.weixinclient.service.DataService;
+import com.xuan.weixinclient.utils.ExcelUtils;
+import com.xuan.weixinclient.utils.JsonDataUtils;
+import com.xuan.weixinserver.entity.ServiceData;
 
 /**
  * 获取数据全量表数据的Service实现，Json的数据结构如下：<br>
@@ -22,46 +23,13 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public String getAllDataJsonStr() {
 		try {
-			//整个返回
-			JSONObject ret = new JSONObject();
+			ServiceData serviceData = ExcelUtils.parse("D://111.xls");
 
-			//返回文本
-			JSONObject message = new JSONObject();
+			if(null == serviceData){
+				return null;
+			}
 
-			//多张表
-			JSONArray tables = new JSONArray();
-
-			//一张表
-			JSONObject table = new JSONObject();
-
-			//多条数据
-			JSONArray tableLinesData = new JSONArray();
-
-			//一条数据
-			JSONObject tableLineData1 = new JSONObject();
-			tableLineData1.put("name", "xuan");
-			tableLineData1.put("age", "19");
-
-			//一条数据
-			JSONObject tableLineData2 = new JSONObject();
-			tableLineData2.put("name", "anan");
-			tableLineData2.put("age", "21");
-
-			tableLinesData.put(tableLineData1);
-			tableLinesData.put(tableLineData2);
-
-			table.put("tableName", "aaa");
-			table.put("tableData", tableLinesData);
-
-			tables.put(table);
-
-			message.put("serviceId", "111");
-			message.put("tables", tables);
-
-			ret.put("type", "1");
-			ret.put("message", message);
-
-			return ret.toString();
+			return JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		} catch (Exception e) {
 			log.error("扫描全部获取数据异常，原因：" + e.getMessage(),e);
 		}

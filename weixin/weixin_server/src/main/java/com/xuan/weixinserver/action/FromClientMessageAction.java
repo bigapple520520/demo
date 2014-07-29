@@ -48,6 +48,8 @@ public class FromClientMessageAction extends BasicAction {
 
 	//处理客户端过来的数据同步
 	private String deal2(int type, String message){
+		log.debug(message);
+
 		String retStr = null;
 		try {
 			/*解码Json数据成对象*/

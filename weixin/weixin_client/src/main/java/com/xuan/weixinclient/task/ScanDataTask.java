@@ -8,8 +8,8 @@ import com.winupon.base.wpcf.util.UUIDUtils;
 import com.xuan.weixinclient.client.Constants;
 import com.xuan.weixinclient.client.MsgClient;
 import com.xuan.weixinclient.client.ServiceLocator;
-import com.xuan.weixinserver.message.CommonMessage;
-import com.xuan.weixinserver.message.CommonRespMessage;
+import com.xuan.weixinserver.message.FromClientMessage;
+import com.xuan.weixinserver.message.FromClientRespMessage;
 import com.xuan.weixinserver.message.common.AbstractMessage;
 
 /**
@@ -32,9 +32,9 @@ public class ScanDataTask extends AbstractRunnableTask {
 			log.debug("发起一次同步，全量数据：" + retStr);
 
 			/*构造消息把数据发送到服务器端，对服务器端返回暂时不处理，只打印日志*/
-			CommonMessage commonMessage = new CommonMessage(Constants.ACTION_SYNC_DATA, retStr);
-			AbstractMessage abstractMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), commonMessage, 5000);
-			CommonRespMessage message = (CommonRespMessage)abstractMessage;
+			FromClientMessage fromClientMessage = new FromClientMessage(Constants.ACTION_SYNC_DATA, retStr);
+			AbstractMessage abstractMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), fromClientMessage, 5000);
+			FromClientRespMessage message = (FromClientRespMessage)abstractMessage;
 
 			if(Constants.ACTION_SYNC_DATA == message.getType()){
 				log.debug("同步结果：" + message.getMessage());
