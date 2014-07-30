@@ -20,7 +20,7 @@ import com.xuan.weixinclient.task.ScheduledTaskExecutorFactory;
  * @version $Revision: 1.0 $, $Date: 2013-2-28 上午10:26:19 $
  */
 public class Catalina {
-	public static final int INTERVAL = 3;
+	public static final int INTERVAL = 10;
 
     public static void main(String[] args) {
     	String username = "xuan";

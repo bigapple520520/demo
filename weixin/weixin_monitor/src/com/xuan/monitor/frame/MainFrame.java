@@ -7,6 +7,11 @@ package com.xuan.monitor.frame;
 
 import java.awt.Font;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
 
 import javax.swing.JButton;
@@ -25,6 +30,11 @@ import com.winupon.base.wpcf.util.UUIDUtils;
 import com.xuan.monitor.adapter.MouseClickedkListener;
 import com.xuan.monitor.client.MsgClient;
 import com.xuan.monitor.utils.DialogUtils;
+import com.xuan.monitor.utils.JsonDataUtils;
+import com.xuan.weixinserver.entity.Constants;
+import com.xuan.weixinserver.entity.ServiceData;
+import com.xuan.weixinserver.entity.Table;
+import com.xuan.weixinserver.entity.TableLine;
 import com.xuan.weixinserver.message.FromClientMessage;
 import com.xuan.weixinserver.message.FromClientRespMessage;
 import com.xuan.weixinserver.message.common.AbstractMessage;
@@ -38,7 +48,8 @@ import com.xuan.weixinserver.message.common.AbstractMessage;
 public class MainFrame extends JFrame {
     private static final long serialVersionUID = 8656082015568504447L;
 
-    private final DefaultTableModel model = new DefaultTableModel();
+    private DefaultTableModel model;
+    private JTable jTable;
 
     public MainFrame() {
         super();
@@ -95,27 +106,52 @@ public class MainFrame extends JFrame {
     		public void mouseClicked(MouseEvent e) {
     			try {
     				String serviceId = tableInput1.getText();
-        			String table = tableInput2.getText();
+        			String tableName = tableInput2.getText();
 
         			if(StringUtils.isEmpty(serviceId)){
         				DialogUtils.showInfo("请输入serviceId号，不能为空哦");
         				return;
         			}
 
-        			if(StringUtils.isEmpty(table)){
+        			if(StringUtils.isEmpty(tableName)){
         				DialogUtils.showInfo("请输入要查询的表，不能为空哦");
         				return;
         			}
 
         			JSONObject object = new JSONObject();
             		object.put("serviceId", serviceId);
-            		object.put("table", table);
+            		object.put("tableName", tableName);
 
         			FromClientMessage fromMessage = new FromClientMessage(1, object.toString());
         			AbstractMessage respMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), fromMessage, 5000);
         			FromClientRespMessage message = (FromClientRespMessage)respMessage;
         			if(1 == message.getType()){
-        				model.addColumn("数据", new Object[]{message.getMessage()});
+        				ServiceData serviceData = JsonDataUtils.decodeServiceDataFromJsonStr(message.getMessage());
+        				Table table = serviceData.getTable(Constants.TABLE);
+
+        				Map<String,List<String>> name2ColumMap = new HashMap<String, List<String>>();
+
+        				for(Entry<String, TableLine> entry : table.getMap().entrySet()){
+        					TableLine tableLine = entry.getValue();
+        					for(Entry<String, String> name2ValueEntry : tableLine.getMap().entrySet()){
+        						String name = name2ValueEntry.getKey();
+        						String value = name2ValueEntry.getValue();
+
+        						List<String> columDataList = name2ColumMap.get(name);
+        						if(null == columDataList){
+        							columDataList = new ArrayList<String>();
+        							name2ColumMap.put(name, columDataList);
+        						}
+        						columDataList.add(value);
+        					}
+        				}
+
+        				model = new DefaultTableModel();
+        				for(Entry<String, List<String>> entry : name2ColumMap.entrySet()){
+        					model.addColumn(entry.getKey(),entry.getValue().toArray(new Object[entry.getValue().size()]));
+
+        				}
+        				jTable.setModel(model);
         			}
 				}
     			catch(TimeoutException e1){
@@ -130,14 +166,14 @@ public class MainFrame extends JFrame {
     }
 
     private void initTable(JPanel panel){
-    	JTable table = new JTable(model){
+    	jTable = new JTable(){
 			private static final long serialVersionUID = 4887372060511439395L;
 			@Override
     		public boolean isCellEditable(int row, int column){
     			return false;
             }
     	};
-    	JScrollPane jscrollPane = new JScrollPane(table);
+    	JScrollPane jscrollPane = new JScrollPane(jTable);
     	jscrollPane.setBounds(50, 110, 1000, 500);
     	panel.add(jscrollPane);
     }

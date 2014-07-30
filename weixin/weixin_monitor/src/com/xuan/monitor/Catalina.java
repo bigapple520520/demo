@@ -18,7 +18,7 @@ import com.xuan.monitor.frame.MainFrame;
  */
 public class Catalina {
     public static void main(String[] args) {
-    	String username = "xuan";
+    	String username = "anan";
     	String password = "123456";
 
     	String loginId = SecurityUtils.encodeByMD5(username+password);

@@ -22,4 +22,11 @@ public abstract class Constants {
 	 */
 	public static final int ACTION_SYNC_DATA = 2;
 
+	//-------------------------------------------数据库表字段名称-----------------------------------
+	public static final String TABLE = "root";
+	public static final String TABLE_COLUMN_1 = "key";
+	public static final String TABLE_COLUMN_2 = "value";
+	public static final String TABLE_COLUMN_3 = "qualityCode";
+	public static final String TABLE_COLUMN_4 = "updateTime";
+
 }

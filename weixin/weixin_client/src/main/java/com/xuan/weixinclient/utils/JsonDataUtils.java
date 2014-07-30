@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xuan.weixinclient.client.Constants;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -57,18 +58,19 @@ public abstract class JsonDataUtils {
 					JSONArray tableLineArray = tableObj.getJSONArray("tableData");
 					for(int j=0,m=tableLineArray.length(); j<m; j++){
 						JSONObject tableLineObj = (JSONObject)tableLineArray.get(j);
-						String name = JsonUtils.getString(tableLineObj, "name");
-						String value = JsonUtils.getString(tableLineObj, "value");
-						String qualityCode = JsonUtils.getString(tableLineObj, "qualityCode");
-						String updateTime = JsonUtils.getString(tableLineObj, "updateTime");
+						String key = JsonUtils.getString(tableLineObj, Constants.TABLE_COLUMN_1);
+						String value = JsonUtils.getString(tableLineObj, Constants.TABLE_COLUMN_2);
+						String qualityCode = JsonUtils.getString(tableLineObj, Constants.TABLE_COLUMN_3);
+						String updateTime = JsonUtils.getString(tableLineObj, Constants.TABLE_COLUMN_4);
 
 						TableLine tableLine = new TableLine();
-						tableLine.put("name", name);
-						tableLine.put("value", value);
-						tableLine.put("qualityCode", qualityCode);
-						tableLine.put("updateTime", updateTime);
-						table.add("name", tableLine);
+						tableLine.put(Constants.TABLE_COLUMN_1, key);
+						tableLine.put(Constants.TABLE_COLUMN_2, value);
+						tableLine.put(Constants.TABLE_COLUMN_3, qualityCode);
+						tableLine.put(Constants.TABLE_COLUMN_4, updateTime);
+						table.add(key, tableLine);
 					}
+
 					serviceData.addTable(tableName, table);
 				}
 
@@ -113,8 +115,8 @@ public abstract class JsonDataUtils {
 				for(Entry<String, TableLine> name2TableLine : name2TableLineMap.entrySet()){
 					TableLine tableLine = name2TableLine.getValue();
 
+					JSONObject tableLineObj = new JSONObject();
 					for(Entry<String, String> name2Value : tableLine.getMap().entrySet()){
-						JSONObject tableLineObj = new JSONObject();
 						tableLineObj.put(name2Value.getKey(), name2Value.getValue());
 						tableData.put(tableLineObj);
 					}

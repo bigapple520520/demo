@@ -9,6 +9,7 @@ import jxl.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xuan.weixinclient.client.Constants;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -37,7 +38,7 @@ public abstract class ExcelUtils {
 			Sheet sheet = work.getSheet(0);
 
 			Table table = new Table();
-			table.setName("root");
+			table.setName(Constants.TABLE);
 
 			String serviceId = sheet.getCell(0, 0).getContents();//服务器名
 			serviceData.setServiceId(serviceId);

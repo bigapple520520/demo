@@ -3,7 +3,7 @@
  * Copyright (c) 2014 ZDSoft Networks, Inc. All rights reserved.
  * $Id$
  */
-package com.xuan.weixinserver.util;
+package com.xuan.weixinserver.entity;
 
 /**
  * 系统参数常量
@@ -21,5 +21,12 @@ public abstract class Constants {
 	 * 客户端程序向中央服务器推送数据，保持数据的同步
 	 */
 	public static final int ACTION_SYNC_DATA = 2;
+
+	//-------------------------------------------数据库表字段名称-----------------------------------
+	public static final String TABLE = "root";
+	public static final String TABLE_COLUMN_1 = "key";
+	public static final String TABLE_COLUMN_2 = "value";
+	public static final String TABLE_COLUMN_3 = "qualityCode";
+	public static final String TABLE_COLUMN_4 = "updateTime";
 
 }

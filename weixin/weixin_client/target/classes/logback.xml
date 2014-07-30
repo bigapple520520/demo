@@ -33,15 +33,11 @@
     
     <logger name="org.apache.commons.beanutils.PropertyUtils" level="ERROR" additivity="false"/>
     <logger name="org.apache.mina" level="ERROR"></logger>
-    <logger name="net.zdsoft.weixinserver" level="DEBUG"></logger>
+    <logger name="com.xuan.weixinclient" level="DEBUG"></logger>
     <logger name="com.winupon.base.wpcf" level="INFO"></logger>
     <logger name="com.winupon.base.wpcf.filter.ProtocolFilter" level="INFO"></logger>
     <logger name="com.winupon.base.wpcf.core.WPCFPServerSessionHandler" level="INFO"></logger>
     <logger name="com.winupon.base.wpcf.session.ServerSessionManager" level="INFO"></logger>
-    
-    <logger name="net.zdsoft.weixinserver.server.msgdeal.hub" level="ERROR"></logger>
-    <logger name="net.zdsoft.weixinserver.server.task" level="ERROR"></logger>
-    <logger name="net.zdsoft.weixinserver.server.task.PushMessageExtTask" level="ERROR"></logger>
     
     <root level="ERROR">
         <appender-ref ref="Console" />

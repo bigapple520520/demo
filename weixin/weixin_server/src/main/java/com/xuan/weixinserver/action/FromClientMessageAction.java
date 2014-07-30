@@ -7,12 +7,12 @@ import net.zdsoft.keel.util.Validators;
 import org.json.JSONObject;
 
 import com.xuan.weixinserver.client.CacheMap;
+import com.xuan.weixinserver.entity.Constants;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.message.FromClientMessage;
 import com.xuan.weixinserver.message.FromClientRespMessage;
 import com.xuan.weixinserver.message.common.AbstractMessage;
 import com.xuan.weixinserver.service.ServiceDataService;
-import com.xuan.weixinserver.util.Constants;
 import com.xuan.weixinserver.util.JsonUtils;
 
 /**
@@ -28,6 +28,8 @@ public class FromClientMessageAction extends BasicAction {
 	@Override
 	protected void doDealMessage(AbstractMessage abstractMessage) {
 		FromClientMessage message = (FromClientMessage)abstractMessage;
+
+		log.debug(message.getMessage());
 
 		String ret = null;
 		int type = message.getType();
@@ -94,11 +96,11 @@ public class FromClientMessageAction extends BasicAction {
 			/*把数据编码成Json格式，方便传输*/
 			String retStr = serviceDataService.encodeJsonStrFromServiceData(serviceData, serviceId);
 			if(Validators.isEmpty(retStr)){
-				return JsonUtils.getError("获取数据失败，请看下有没有日报报错");
+				return JsonUtils.getError("获取数据失败，请看下有没有日志报错");
 			}
 
 			/*返回数据*/
-			return JsonUtils.getMessage(retStr);
+			return retStr;
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
 			return JsonUtils.getError("数据处理异常，原因：" + e.getMessage());
