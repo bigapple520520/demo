@@ -6,6 +6,8 @@
 package com.xuan.monitor.frame;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import java.util.concurrent.TimeoutException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,12 +31,14 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
+import com.winupon.base.wpcf.util.SecurityUtils;
 import com.winupon.base.wpcf.util.UUIDUtils;
 import com.xuan.monitor.adapter.MouseClickedkListener;
 import com.xuan.monitor.client.MsgClient;
 import com.xuan.monitor.utils.DialogUtils;
 import com.xuan.monitor.utils.JsonDataUtils;
 import com.xuan.weixinserver.entity.Constants;
+import com.xuan.weixinserver.entity.Result;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -53,7 +60,63 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super();
+        initMenu();
         init();
+    }
+
+    //创建菜单
+    private void initMenu(){
+    	JMenuBar jMenuBar = new JMenuBar();
+    	JMenu jMenu = new JMenu("操作");
+
+    	JMenuItem loginItem = new JMenuItem("登录");
+    	loginItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+		    	String username = "anan";
+		    	String password = "123456";
+
+		    	try {
+		    		String loginId = SecurityUtils.encodeByMD5(username+password);
+		        	String token = SecurityUtils.encodeByMD5(loginId);
+		        	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+					DialogUtils.showInfo("登录失败，原因："+e2.getMessage());
+					return;
+				}
+
+		    	if(MsgClient.getInstance().isLogined()){
+		    		DialogUtils.showInfo("登录成功请操作");
+		    	}else{
+		    		DialogUtils.showInfo("登录失败，请检查服务器有没有启动什么的");
+		    	}
+			}
+		});
+
+    	JMenuItem disconnectItem = new JMenuItem("断开");
+    	disconnectItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MsgClient.getInstance().close();
+				DialogUtils.showInfo("断开成功");
+			}
+		});
+
+    	JMenuItem modifyItem = new JMenuItem("监控修改");
+    	modifyItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new OperateFrame();
+			}
+		});
+
+    	jMenu.add(loginItem);
+    	jMenu.add(disconnectItem);
+    	jMenu.add(modifyItem);
+
+    	jMenuBar.add(jMenu);
+    	setJMenuBar(jMenuBar);
     }
 
     private void init() {
@@ -105,6 +168,11 @@ public class MainFrame extends JFrame {
     		@Override
     		public void mouseClicked(MouseEvent e) {
     			try {
+    				if(MsgClient.getInstance().isClosed()){
+    					DialogUtils.showInfo("请先在左上角操作菜单项中进行登录操作");
+    					return;
+    				}
+
     				String serviceId = tableInput1.getText();
         			String tableName = tableInput2.getText();
 
@@ -122,35 +190,48 @@ public class MainFrame extends JFrame {
             		object.put("serviceId", serviceId);
             		object.put("tableName", tableName);
 
-        			FromClientMessage fromMessage = new FromClientMessage(1, object.toString());
+        			FromClientMessage fromMessage = new FromClientMessage(FromClientMessage.ACTION_GET_DATA, object.toString());
         			AbstractMessage respMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), fromMessage, 5000);
         			FromClientRespMessage message = (FromClientRespMessage)respMessage;
-        			if(1 == message.getType()){
-        				ServiceData serviceData = JsonDataUtils.decodeServiceDataFromJsonStr(message.getMessage());
-        				Table table = serviceData.getTable(Constants.TABLE);
+        			if(FromClientMessage.ACTION_GET_DATA == message.getType()){
+        				Result<ServiceData> result = JsonDataUtils.decodeServiceDataFromJsonStr(message.getMessage());
+        				if(Constants.SUCCESS_1.equals(result.getSuccess())){
+        					ServiceData serviceData = result.getData();
+            				Table table = serviceData.getTable(Constants.TABLE);
 
-        				Map<String,List<String>> name2ColumMap = new HashMap<String, List<String>>();
+            				Map<String,List<String>> name2ColumMap = new HashMap<String, List<String>>();
 
-        				for(Entry<String, TableLine> entry : table.getMap().entrySet()){
-        					TableLine tableLine = entry.getValue();
-        					for(Entry<String, String> name2ValueEntry : tableLine.getMap().entrySet()){
-        						String name = name2ValueEntry.getKey();
-        						String value = name2ValueEntry.getValue();
+            				for(Entry<String, TableLine> entry : table.getMap().entrySet()){
+            					TableLine tableLine = entry.getValue();
+            					for(Entry<String, String> name2ValueEntry : tableLine.getMap().entrySet()){
+            						String name = name2ValueEntry.getKey();
+            						String value = name2ValueEntry.getValue();
 
-        						List<String> columDataList = name2ColumMap.get(name);
-        						if(null == columDataList){
-        							columDataList = new ArrayList<String>();
-        							name2ColumMap.put(name, columDataList);
-        						}
-        						columDataList.add(value);
-        					}
+            						List<String> columDataList = name2ColumMap.get(name);
+            						if(null == columDataList){
+            							columDataList = new ArrayList<String>();
+            							name2ColumMap.put(name, columDataList);
+            						}
+            						columDataList.add(value);
+            					}
+            				}
+
+            				model = new DefaultTableModel();
+            				for(Entry<String, List<String>> entry : name2ColumMap.entrySet()){
+            					model.addColumn(entry.getKey(),entry.getValue().toArray(new Object[entry.getValue().size()]));
+
+            				}
+            				jTable.setModel(model);
+        				}else{
+        					//异常提示
+            				model = new DefaultTableModel();
+            				model.addColumn("错误提示",new Object[]{result.getMessage()});
+            				jTable.setModel(model);
         				}
-
+        			}else{
+        				//返回类型对不上，一般不会出现
         				model = new DefaultTableModel();
-        				for(Entry<String, List<String>> entry : name2ColumMap.entrySet()){
-        					model.addColumn(entry.getKey(),entry.getValue().toArray(new Object[entry.getValue().size()]));
-
-        				}
+        				model.addColumn("错误提示",new Object[]{"返回类型错误："+message.getType()});
         				jTable.setModel(model);
         			}
 				}

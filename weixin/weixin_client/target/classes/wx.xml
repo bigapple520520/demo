@@ -14,8 +14,8 @@
 	        <action class="com.xuan.weixinserver.server.action.FromWeixinHelpMessageAction" />
 	    </message>
 	    
-	    <message class="com.xuan.weixinserver.message.CommonMessage">
-	        <action class="com.xuan.weixinserver.server.action.CommonMessageAction" />
+	    <message class="com.xuan.weixinserver.message.ToClientMessage">
+	        <action class="com.xuan.weixinclient.action.ToClientMessageAction" />
 	    </message>
 	</messages>
 </config>

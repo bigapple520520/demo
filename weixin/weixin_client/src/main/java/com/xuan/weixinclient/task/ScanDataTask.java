@@ -5,7 +5,6 @@ import java.util.concurrent.TimeoutException;
 import net.zdsoft.keel.util.concurrent.AbstractRunnableTask;
 
 import com.winupon.base.wpcf.util.UUIDUtils;
-import com.xuan.weixinclient.client.Constants;
 import com.xuan.weixinclient.client.MsgClient;
 import com.xuan.weixinclient.client.ServiceLocator;
 import com.xuan.weixinserver.message.FromClientMessage;
@@ -32,11 +31,11 @@ public class ScanDataTask extends AbstractRunnableTask {
 			log.debug("发起一次同步，全量数据：" + retStr);
 
 			/*构造消息把数据发送到服务器端，对服务器端返回暂时不处理，只打印日志*/
-			FromClientMessage fromClientMessage = new FromClientMessage(Constants.ACTION_SYNC_DATA, retStr);
+			FromClientMessage fromClientMessage = new FromClientMessage(FromClientMessage.ACTION_SYNC_DATA, retStr);
 			AbstractMessage abstractMessage = MsgClient.getInstance().sendMessage2WaitResponse(UUIDUtils.createId(), fromClientMessage, 5000);
 			FromClientRespMessage message = (FromClientRespMessage)abstractMessage;
 
-			if(Constants.ACTION_SYNC_DATA == message.getType()){
+			if(FromClientMessage.ACTION_SYNC_DATA == message.getType()){
 				log.debug("同步结果：" + message.getMessage());
 			}else{
 				log.debug("发送和返回的消息类型不匹配，请联系开发");

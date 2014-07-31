@@ -12,21 +12,15 @@ package com.xuan.weixinserver.entity;
  * @version $Revision: 1.0 $, $Date: 2014-2-28 下午4:59:09 $
  */
 public abstract class Constants {
-	/**
-	 * 监控程序向中央服务器获取数据
-	 */
-	public static final int ACTION_GET_DATA = 1;
-
-	/**
-	 * 客户端程序向中央服务器推送数据，保持数据的同步
-	 */
-	public static final int ACTION_SYNC_DATA = 2;
-
 	//-------------------------------------------数据库表字段名称-----------------------------------
 	public static final String TABLE = "root";
 	public static final String TABLE_COLUMN_1 = "key";
 	public static final String TABLE_COLUMN_2 = "value";
 	public static final String TABLE_COLUMN_3 = "qualityCode";
 	public static final String TABLE_COLUMN_4 = "updateTime";
+
+	//传输Json格式数据时，用来表示操作是否成功的状态
+	public static final String SUCCESS_1 = "1";
+	public static final String SUCCESS_0 = "0";
 
 }

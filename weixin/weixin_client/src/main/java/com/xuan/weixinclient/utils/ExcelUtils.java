@@ -1,15 +1,22 @@
 package com.xuan.weixinclient.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableCell;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xuan.weixinclient.client.Constants;
+import com.xuan.weixinserver.entity.Constants;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -24,12 +31,46 @@ public abstract class ExcelUtils {
 	private static final Logger log = LoggerFactory.getLogger(ExcelUtils.class);
 
 	/**
+	 * serviceData数据写到excel文件中
+	 *
+	 * @param serviceData
+	 */
+	public static void writeToFile(String fileName, ServiceData serviceData){
+		try {
+			Workbook wb = Workbook.getWorkbook(new File(fileName));
+			WritableWorkbook wwb = Workbook.createWorkbook(new File(fileName), wb);
+			WritableSheet sheet = wwb.getSheet(0);
+
+			WritableCell oldCell = sheet.getWritableCell(0,0);
+			sheet.addCell(new Label(oldCell.getColumn(), oldCell.getRow(), serviceData.getServiceId(), oldCell.getCellFormat()));
+
+			Table table = serviceData.getTable(Constants.TABLE);
+			if(null == table){
+				log.error("table表为空");
+				return;
+			}
+
+			Map<String, TableLine> map = table.getMap();
+			int row = 2;
+			for(Entry<String, TableLine> entry : map.entrySet()){
+				WritableCell keyCell = sheet.getWritableCell(0,row);
+				WritableCell valueCell = sheet.getWritableCell(1,row);
+				WritableCell qualityCode = sheet.getWritableCell(2,row);
+				WritableCell updateTime = sheet.getWritableCell(3,row);
+				row++;
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	/**
 	 * 解析excel文件
 	 *
 	 * @param fileName
 	 * @return
 	 */
-	public static ServiceData parse(String fileName){
+	public static ServiceData loadFromfile(String fileName){
 		ServiceData serviceData = new ServiceData();
 		try {
 			InputStream is = new FileInputStream(fileName);
@@ -66,7 +107,7 @@ public abstract class ExcelUtils {
 	}
 
 	public static void main(String[] args) {
-		ServiceData serviceData = parse("D://111.xls");
+		ServiceData serviceData = loadFromfile("D://111.xls");
 		String str = JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		System.out.println(str);
 

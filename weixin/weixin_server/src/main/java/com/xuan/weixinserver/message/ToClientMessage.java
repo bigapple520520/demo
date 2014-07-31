@@ -10,6 +10,8 @@ import com.xuan.weixinserver.util.CommandConstants;
  * @version 创建时间：2014-7-26 下午3:01:47
  */
 public class ToClientMessage extends AbstractTypeMessage{
+	public static final int ACTION_SYNC_DATA = 1;//服务器端向客户端通知修改数据
+
 	public ToClientMessage(){}
 
 	public ToClientMessage(int type){

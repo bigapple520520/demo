@@ -8,6 +8,8 @@ package com.xuan.weixinserver.wx.session;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.zdsoft.keel.util.Validators;
+
 /**
  * 登录用户连接管理
  *
@@ -48,6 +50,10 @@ public class WxSessionManager {
      * @return
      */
     public boolean hasSession(String loginId) {
+    	if(Validators.isEmpty(loginId)){
+    		return false;
+    	}
+
         return loginId2SessionMap.containsKey(loginId);
     }
 

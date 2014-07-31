@@ -355,6 +355,10 @@ public class MsgClient {
         return true;
     }
 
+    public boolean isClosed(){
+    	return isClosed;
+    }
+
     // 根据连接失败的次数返回重连的间隔秒数
     private int getWaitSeconds() {
         loginFailTimes++;

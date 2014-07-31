@@ -5,8 +5,6 @@
  */
 package com.xuan.monitor;
 
-import com.winupon.base.wpcf.util.SecurityUtils;
-import com.xuan.monitor.client.MsgClient;
 import com.xuan.monitor.frame.MainFrame;
 
 
@@ -18,12 +16,16 @@ import com.xuan.monitor.frame.MainFrame;
  */
 public class Catalina {
     public static void main(String[] args) {
-    	String username = "anan";
-    	String password = "123456";
-
-    	String loginId = SecurityUtils.encodeByMD5(username+password);
-    	String token = SecurityUtils.encodeByMD5(loginId);
-    	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
+//    	String username = "anan";
+//    	String password = "123456";
+//
+//    	try {
+//    		String loginId = SecurityUtils.encodeByMD5(username+password);
+//        	String token = SecurityUtils.encodeByMD5(loginId);
+//        	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
         new MainFrame();
     }

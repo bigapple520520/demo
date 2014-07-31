@@ -35,6 +35,7 @@ import com.xuan.weixinserver.message.common.SplitedMessage;
 import com.xuan.weixinserver.service.ServiceDataService;
 import com.xuan.weixinserver.wx.action.ActionContext;
 import com.xuan.weixinserver.wx.action.ActionInvoker;
+import com.xuan.weixinserver.wx.session.WxSession;
 import com.xuan.weixinserver.wx.session.WxSessionManager;
 
 /**
@@ -154,7 +155,12 @@ public class WeiXinServer {
 
         @Override
         public boolean verifyToken(String loginId, String token, byte[] otherMsg) {
-        	return StringUtils.equals(SecurityUtils.encodeByMD5(loginId), token);
+        	boolean isLogin = StringUtils.equals(SecurityUtils.encodeByMD5(loginId), token);
+        	if(isLogin){
+        		WxSessionManager.getInstance().putSession(loginId, new WxSession());
+        	}
+
+        	return isLogin;
         }
 
         @Override

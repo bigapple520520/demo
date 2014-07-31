@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.xuan.utils.Validators;
 import com.xuan.weixinserver.entity.Constants;
+import com.xuan.weixinserver.entity.Result;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -30,15 +31,15 @@ public abstract class JsonDataUtils {
 	 * @param jsonStr
 	 * @return
 	 */
-	public static ServiceData decodeServiceDataFromJsonStr(String jsonStr) {
+	public static Result<ServiceData> decodeServiceDataFromJsonStr(String jsonStr) {
 		if(Validators.isEmpty(jsonStr)){
-			return null;
+			return new Result<ServiceData>(Constants.SUCCESS_0, "串是空的");
 		}
 
 		try {
 			JSONObject object = new JSONObject(jsonStr);
 			String success = JsonUtils.getString(object, "success");
-			if("1".equals(success)){
+			if(Constants.SUCCESS_1.equals(success)){
 				JSONObject messageObj = object.getJSONObject("message");
 				String serviceId = JsonUtils.getString(messageObj, "serviceId");
 
@@ -73,15 +74,15 @@ public abstract class JsonDataUtils {
 					serviceData.addTable(tableName, table);
 				}
 
-				return serviceData;
+
+				return new Result<ServiceData>(Constants.SUCCESS_1, "数据解析成功", serviceData);
 			}else{
-				return null;
+				return new Result<ServiceData>(Constants.SUCCESS_0, JsonUtils.getString(object, "message"), null);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
+			return new Result<ServiceData>(Constants.SUCCESS_0,"解析异常，原因："+e.getMessage(), null);
 		}
-
-		return null;
 	}
 
 	/**

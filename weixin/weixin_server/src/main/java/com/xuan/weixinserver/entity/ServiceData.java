@@ -28,6 +28,11 @@ public class ServiceData {
 	private volatile boolean isDirty = false;
 
 	/**
+	 * 对应客户端登录上来的id，用来通知客户端数据的变化
+	 */
+	private String loginId;
+
+	/**
 	 * 存放一堆数据库表，key是表名，value是一个表的对象
 	 */
 	private final Map<String, Table> map = new ConcurrentHashMap<String, Table>();
@@ -78,6 +83,14 @@ public class ServiceData {
 
 	public Map<String, Table> getMap() {
 		return map;
+	}
+
+	public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 
 }
