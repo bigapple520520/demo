@@ -11,6 +11,7 @@ import com.winupon.base.wpcf.util.SecurityUtils;
 import com.xuan.weixinclient.client.MsgClient;
 import com.xuan.weixinclient.task.ScanDataTask;
 import com.xuan.weixinclient.task.ScheduledTaskExecutorFactory;
+import com.xuan.weixinserver.wx.WxInit;
 
 
 /**
@@ -23,6 +24,8 @@ public class Catalina {
 	public static final int INTERVAL = 10;
 
     public static void main(String[] args) {
+    	WxInit.getInstance().init();
+
     	String username = "xuan";
     	String password = "123456";
 
@@ -30,7 +33,9 @@ public class Catalina {
     	String token = SecurityUtils.encodeByMD5(loginId);
     	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
 
-    	ScheduledTaskExecutorFactory.getScheduledTaskExecutor().scheduleWithFixedDelay(new ScanDataTask(), INTERVAL, INTERVAL, TimeUnit.SECONDS);
+    	if(MsgClient.getInstance().isLogined()){
+    		ScheduledTaskExecutorFactory.getScheduledTaskExecutor().scheduleWithFixedDelay(new ScanDataTask(), INTERVAL, INTERVAL, TimeUnit.SECONDS);
+    	}
     }
 
 }

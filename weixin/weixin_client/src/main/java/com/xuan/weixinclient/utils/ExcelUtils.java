@@ -53,12 +53,22 @@ public abstract class ExcelUtils {
 			Map<String, TableLine> map = table.getMap();
 			int row = 2;
 			for(Entry<String, TableLine> entry : map.entrySet()){
+				TableLine tableLine = entry.getValue();
+
 				WritableCell keyCell = sheet.getWritableCell(0,row);
 				WritableCell valueCell = sheet.getWritableCell(1,row);
 				WritableCell qualityCode = sheet.getWritableCell(2,row);
 				WritableCell updateTime = sheet.getWritableCell(3,row);
+
+				sheet.addCell(new Label(keyCell.getColumn(), keyCell.getRow(), tableLine.get(Constants.TABLE_COLUMN_1), keyCell.getCellFormat()));
+				sheet.addCell(new Label(valueCell.getColumn(), valueCell.getRow(), tableLine.get(Constants.TABLE_COLUMN_2), valueCell.getCellFormat()));
+				sheet.addCell(new Label(qualityCode.getColumn(), qualityCode.getRow(), tableLine.get(Constants.TABLE_COLUMN_3), qualityCode.getCellFormat()));
+				sheet.addCell(new Label(updateTime.getColumn(), updateTime.getRow(), tableLine.get(Constants.TABLE_COLUMN_4), updateTime.getCellFormat()));
 				row++;
 			}
+
+			wwb.write();
+			wwb.close();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -111,9 +121,15 @@ public abstract class ExcelUtils {
 		String str = JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		System.out.println(str);
 
-		ServiceData temp = JsonDataUtils.decodeServiceDataFromJsonStr(str);
-		String str2 = JsonDataUtils.encodeJsonStrFromServiceData(temp, temp.getServiceId());
+		serviceData.getTable("root").get("as").put("value", "111111444111111111111111");
+		String str2 = JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		System.out.println(str2);
+
+		writeToFile("D://111.xls", serviceData);
+
+//		ServiceData temp = JsonDataUtils.decodeServiceDataFromJsonStr(str);
+//		String str2 = JsonDataUtils.encodeJsonStrFromServiceData(temp, temp.getServiceId());
+//		System.out.println(str2);
 	}
 
 }

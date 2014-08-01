@@ -1,6 +1,11 @@
 package com.xuan.weixinclient.action;
 
+import com.xuan.weixinclient.utils.ExcelUtils;
+import com.xuan.weixinclient.utils.JsonDataUtils;
 import com.xuan.weixinclient.utils.JsonUtils;
+import com.xuan.weixinserver.entity.Constants;
+import com.xuan.weixinserver.entity.Result;
+import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.message.ToClientMessage;
 import com.xuan.weixinserver.message.ToClientRespMessage;
 import com.xuan.weixinserver.message.common.AbstractMessage;
@@ -27,6 +32,12 @@ public class ToClientMessageAction extends BasicAction {
 	//处理来自服务器端的数据同步
 	private void dealSyncDataFromServer(int type, String message){
 		/*读取*/
+		Result<ServiceData> result = JsonDataUtils.decodeServiceDataFromJsonStr(message);
+		if(Constants.SUCCESS_1.equals(result.getSuccess())){
+			ServiceData serviceData = result.getData();
+			ExcelUtils.writeToFile("D://111.xls", serviceData);
+		}
+		//else不考虑异常，以后考虑一下
 
 		responseMessage(new ToClientRespMessage(type, JsonUtils.getMessage("同步成功")));
 	}
