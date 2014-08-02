@@ -29,6 +29,8 @@ import com.xuan.weixinserver.entity.TableLine;
  */
 public abstract class ExcelUtils {
 	private static final Logger log = LoggerFactory.getLogger(ExcelUtils.class);
+	
+	public static final String fileName = "/Users/xuan/Documents/dazzle/demo/weixin/111.xls";
 
 	/**
 	 * serviceData数据写到excel文件中
@@ -117,7 +119,7 @@ public abstract class ExcelUtils {
 	}
 
 	public static void main(String[] args) {
-		ServiceData serviceData = loadFromfile("D://111.xls");
+		ServiceData serviceData = loadFromfile(fileName);
 		String str = JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		System.out.println(str);
 
@@ -125,7 +127,7 @@ public abstract class ExcelUtils {
 		String str2 = JsonDataUtils.encodeJsonStrFromServiceData(serviceData, serviceData.getServiceId());
 		System.out.println(str2);
 
-		writeToFile("D://111.xls", serviceData);
+		writeToFile(fileName, serviceData);
 
 //		ServiceData temp = JsonDataUtils.decodeServiceDataFromJsonStr(str);
 //		String str2 = JsonDataUtils.encodeJsonStrFromServiceData(temp, temp.getServiceId());

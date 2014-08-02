@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: xuan
+Build-Jdk: 1.6.0_65
+Specification-Title: weixinserver
+Specification-Version: wx1.0
+Implementation-Title: weixinserver
+Implementation-Version: wx1.0
+Implementation-Vendor-Id: net.zdsoft
+Created-By: Maven Integration for Eclipse
+

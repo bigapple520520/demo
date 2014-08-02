@@ -17,7 +17,8 @@ import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
 
 /**
- * Json串和ServiceData对象编码解码
+ * Json串和ServiceData对象编码解码，Json的统一数据格式如下：<br>
+ * {"success":"1","message":"{"serviceId":"111","tables":[{"tableName":"aaa", "tableData":[{"name":"xuan","age","111"}]}]}"}
  *
  * @author xuan
  * @version 创建时间：2014-7-29 下午7:43:37
@@ -33,14 +34,15 @@ public abstract class JsonDataUtils {
 	 */
 	public static Result<ServiceData> decodeServiceDataFromJsonStr(String jsonStr) {
 		if(Validators.isEmpty(jsonStr)){
-			return new Result<ServiceData>(Constants.SUCCESS_0, "串是空的");
+			return new Result<ServiceData>(Constants.SUCCESS_0, "Json串是空的");
 		}
 
 		try {
 			JSONObject object = new JSONObject(jsonStr);
-			String success = JsonUtils.getString(object, "success");
+			String success = JsonUtils.getString(object, Constants.JSON_TAG_SUCCESS);
 			if(Constants.SUCCESS_1.equals(success)){
-				JSONObject messageObj = object.getJSONObject("message");
+				//对方传送过来的的是成功的数据，表明message里面是有效的Json串数据
+				JSONObject messageObj = object.getJSONObject(Constants.JSON_TAG_MESSAGE);
 				String serviceId = JsonUtils.getString(messageObj, "serviceId");
 
 				ServiceData serviceData = new ServiceData();
@@ -77,7 +79,8 @@ public abstract class JsonDataUtils {
 
 				return new Result<ServiceData>(Constants.SUCCESS_1, "数据解析成功", serviceData);
 			}else{
-				return new Result<ServiceData>(Constants.SUCCESS_0, JsonUtils.getString(object, "message"), null);
+				//对方传送过来的状态为失败的状态
+				return new Result<ServiceData>(Constants.SUCCESS_0, JsonUtils.getString(object, Constants.JSON_TAG_MESSAGE), null);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
@@ -93,7 +96,7 @@ public abstract class JsonDataUtils {
 	 * @return
 	 */
 	public static String encodeJsonStrFromServiceData(ServiceData serviceData, String serviceId) {
-		if(null == serviceData){
+		if(null == serviceData || Validators.isEmpty(serviceId)){
 			return null;
 		}
 
@@ -130,16 +133,15 @@ public abstract class JsonDataUtils {
 				messageObj.put("tables", tableArray);
 			}
 
-			retObj.put("success", "1");
-			retObj.put("message", messageObj);
+			retObj.put(Constants.JSON_TAG_SUCCESS, Constants.SUCCESS_1);
+			retObj.put(Constants.JSON_TAG_MESSAGE, messageObj);
 
 			return retObj.toString();
 		} catch (Exception e) {
 			log.error("解码ServiceData对象到Json串异常，原因："+e.getMessage(), e);
 		}
-
+		
 		return null;
 	}
-
 
 }

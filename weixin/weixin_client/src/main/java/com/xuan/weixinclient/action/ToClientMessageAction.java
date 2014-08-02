@@ -35,11 +35,11 @@ public class ToClientMessageAction extends BasicAction {
 		Result<ServiceData> result = JsonDataUtils.decodeServiceDataFromJsonStr(message);
 		if(Constants.SUCCESS_1.equals(result.getSuccess())){
 			ServiceData serviceData = result.getData();
-			ExcelUtils.writeToFile("D://111.xls", serviceData);
+			ExcelUtils.writeToFile(ExcelUtils.fileName, serviceData);
+			responseMessage(new ToClientRespMessage(type, JsonUtils.getMessage("同步成功")));
+		}else{
+			responseMessage(new ToClientRespMessage(type, JsonUtils.getError("同步失败")));
 		}
-		//else不考虑异常，以后考虑一下
-
-		responseMessage(new ToClientRespMessage(type, JsonUtils.getMessage("同步成功")));
 	}
 
 }

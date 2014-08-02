@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.xuan.weixinserver.entity.Constants;
+
 /**
  * Json简单处理封装
  *
@@ -43,7 +45,7 @@ public abstract class JsonUtils {
      * @return
      */
     public static String getError(String error)  {
-    	return getRet("0", error);
+    	return getRet(Constants.SUCCESS_0, error);
     }
 
     /**
@@ -53,7 +55,7 @@ public abstract class JsonUtils {
      * @return
      */
     public static String getMessage(String message){
-    	return getRet("1", message);
+    	return getRet(Constants.SUCCESS_1, message);
     }
 
     public static String getString(JSONObject jsonObject, String name) throws Exception {

@@ -23,7 +23,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public String getAllDataJsonStr() {
 		try {
-			ServiceData serviceData = ExcelUtils.loadFromfile("D://111.xls");
+			ServiceData serviceData = ExcelUtils.loadFromfile(ExcelUtils.fileName);
 
 			if(null == serviceData){
 				return null;

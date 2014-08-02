@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import com.winupon.base.wpcf.util.DateUtils;
 import com.winupon.base.wpcf.util.UUIDUtils;
 import com.xuan.weixinserver.client.CacheMap;
+import com.xuan.weixinserver.entity.Constants;
+import com.xuan.weixinserver.entity.Result;
 import com.xuan.weixinserver.entity.ServiceData;
 import com.xuan.weixinserver.entity.Table;
 import com.xuan.weixinserver.entity.TableLine;
@@ -142,17 +144,18 @@ public class FromClientMessageAction extends BasicAction {
 		String retStr = null;
 		try {
 			/*解码Json数据成对象*/
-			ServiceData serviceData = serviceDataService.decodeServiceDataFromJsonStr(message);
-			if(null == serviceData){
-				retStr = JsonUtils.getError("解析后serviceData数据是空");
+			Result<ServiceData> result = serviceDataService.decodeServiceDataFromJsonStr(message);
+			if(Constants.SUCCESS_0.equals(result.getSuccess())){
+				retStr = JsonUtils.getError("解析数据失败，原因："+result.getMessage());
 			}else{
 				/*判断服务器端是否还有数据未同步的*/
+				ServiceData serviceData = result.getData();
 				if(serviceData.isDirty()){
 					if(DateUtil.addSeconds(new Date(), -40).after(serviceData.getLastSyncTime())){
 						serviceData.setDirty(false);//超过40秒数据还是未同步过就设置已同步
 					}
 
-					retStr = JsonUtils.getError("服务器有数据在忘客户端同步中");
+					retStr = JsonUtils.getError("服务器有数据在有在往客户端同步中");
 				}else{
 					/*解码成功后替换服务器的数据*/
 					serviceData.setLoginId(getActionContext().getLoginId());//客户端登录id

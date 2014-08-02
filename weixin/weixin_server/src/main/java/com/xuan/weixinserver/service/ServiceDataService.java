@@ -5,6 +5,7 @@
  */
 package com.xuan.weixinserver.service;
 
+import com.xuan.weixinserver.entity.Result;
 import com.xuan.weixinserver.entity.ServiceData;
 
 /**
@@ -21,7 +22,7 @@ public interface ServiceDataService {
 	 * @param message
 	 * @return
 	 */
-	ServiceData decodeServiceDataFromJsonStr(String jsonStr);
+	Result<ServiceData> decodeServiceDataFromJsonStr(String jsonStr);
 
 	/**
 	 * 从ServiceData数据中编码成Json串
