@@ -77,9 +77,10 @@ public class MainFrame extends JFrame {
 		    	String password = "123456";
 
 		    	try {
-		    		String loginId = SecurityUtils.encodeByMD5(username+password);
+		    		//String loginId = SecurityUtils.encodeByMD5(username+password);
+		    		String loginId = UUIDUtils.createId();
 		        	String token = SecurityUtils.encodeByMD5(loginId);
-		        	MsgClient.getInstance().init("127.0.0.1", 10000, loginId, token);
+		        	MsgClient.getInstance().init("112.124.44.161", 10000, loginId, token);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					DialogUtils.showInfo("登录失败，原因："+e2.getMessage());

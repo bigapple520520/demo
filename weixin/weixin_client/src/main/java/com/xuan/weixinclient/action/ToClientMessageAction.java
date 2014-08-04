@@ -1,5 +1,6 @@
 package com.xuan.weixinclient.action;
 
+import com.xuan.weixinclient.client.ApplicationConfigHelper;
 import com.xuan.weixinclient.utils.ExcelUtils;
 import com.xuan.weixinclient.utils.JsonDataUtils;
 import com.xuan.weixinclient.utils.JsonUtils;
@@ -35,7 +36,7 @@ public class ToClientMessageAction extends BasicAction {
 		Result<ServiceData> result = JsonDataUtils.decodeServiceDataFromJsonStr(message);
 		if(Constants.SUCCESS_1.equals(result.getSuccess())){
 			ServiceData serviceData = result.getData();
-			ExcelUtils.writeToFile(ExcelUtils.fileName, serviceData);
+			ExcelUtils.writeToFile(ApplicationConfigHelper.getDataFilePath(), serviceData);
 			responseMessage(new ToClientRespMessage(type, JsonUtils.getMessage("同步成功")));
 		}else{
 			responseMessage(new ToClientRespMessage(type, JsonUtils.getError("同步失败")));

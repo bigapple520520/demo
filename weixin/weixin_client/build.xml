@@ -121,6 +121,10 @@
         <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.lib}"
               file="${maven.project.build.directory}/${maven.project.build.finalName}.jar">
         </copy>
+        <copy todir="${maven.project.build.directory}/${path.package}/${date.today}/${path.package.lib}">
+            <fileset dir="libs">
+            </fileset>
+        </copy>
     </target>
 
     <!-- 拷贝bin目录 -->
@@ -169,23 +173,13 @@
         </sequential>
     </macrodef>
     
-    <!-- 内网测试 -->
+    <!-- 测试 -->
     <target name="zip-test" depends="release-test" description="release target for test">
-        <zipfiles targetname="test" zipname="test-${app.name}-${app.version}-snapshot-${date.today}.zip" />
+        <zipfiles targetname="test" zipname="${app.name}-${app.version}-test-${date.today}.zip" />
     </target>
     
-    <!-- 万朋聊的发布 -->
+    <!-- 发布 -->
     <target name="zip-common" depends="release-common" description="release target for common">
-        <zipfiles targetname="common" zipname="wpchat-${app.name}-${app.version}-release-${date.today}.zip" />
+        <zipfiles targetname="common" zipname="${app.name}-${app.version}-release-${date.today}.zip" />
     </target>
-    
-    <!-- 万朋聊的发布 -->
-    <target name="zip-nbrrt" depends="release-common" description="release target for nbrrt">
-        <zipfiles targetname="nbrrt" zipname="nbrrt-${app.name}-${app.version}-release-${date.today}.zip" />
-    </target>
-    
-    <!-- 陕西省厅的发布 -->
-    <target name="zip-snst" depends="release-common" description="release target for snst">
-        <zipfiles targetname="snst" zipname="sn-${app.name}-${app.version}-release-${date.today}.zip" />
-    </target> 
 </project>

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.xuan.weixinclient.client.ApplicationConfigHelper;
 import com.xuan.weixinclient.service.DataService;
 import com.xuan.weixinclient.utils.ExcelUtils;
 import com.xuan.weixinclient.utils.JsonDataUtils;
@@ -23,7 +24,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public String getAllDataJsonStr() {
 		try {
-			ServiceData serviceData = ExcelUtils.loadFromfile(ExcelUtils.fileName);
+			ServiceData serviceData = ExcelUtils.loadFromfile(ApplicationConfigHelper.getDataFilePath());
 
 			if(null == serviceData){
 				return null;

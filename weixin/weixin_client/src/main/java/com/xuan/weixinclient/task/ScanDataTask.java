@@ -2,9 +2,11 @@ package com.xuan.weixinclient.task;
 
 import java.util.concurrent.TimeoutException;
 
+import net.zdsoft.keel.util.Validators;
 import net.zdsoft.keel.util.concurrent.AbstractRunnableTask;
 
 import com.winupon.base.wpcf.util.UUIDUtils;
+import com.xuan.weixinclient.client.ApplicationConfigHelper;
 import com.xuan.weixinclient.client.MsgClient;
 import com.xuan.weixinclient.client.ServiceLocator;
 import com.xuan.weixinserver.message.FromClientMessage;
@@ -28,6 +30,12 @@ public class ScanDataTask extends AbstractRunnableTask {
 		try {
 			/*获取客户端的全量数据，并编码成Json格式，方便传输*/
 			String retStr = ServiceLocator.getDataService().getAllDataJsonStr();
+
+			if(Validators.isEmpty(retStr)){
+				log.debug("未找到数据，请确保该目录下的文件存在：" + ApplicationConfigHelper.getDataFilePath());
+				return;
+			}
+
 			log.debug("发起一次同步，全量数据：" + retStr);
 
 			/*构造消息把数据发送到服务器端，对服务器端返回暂时不处理，只打印日志*/
